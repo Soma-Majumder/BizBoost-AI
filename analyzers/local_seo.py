@@ -12,9 +12,9 @@ If the homepage looks JavaScript-built and a detail is missing, the check is
 from __future__ import annotations
 
 import re
-from typing import Any
 from urllib.parse import urlsplit
 
+from analyzers._schema import node_types, schema_nodes
 from crawler.models import PageData, SiteData
 from findings import Category, Finding, Status, finding, unavailable
 
@@ -115,26 +115,13 @@ def _normalize_text(value: str) -> str:
     return " ".join(re.sub(r"[^a-z0-9 ]", " ", value.lower()).split())
 
 
-def _schema_nodes(page: PageData) -> list[dict[str, Any]]:
-    nodes: list[dict[str, Any]] = []
-    for block in page.structured_data:
-        graph = block.get("@graph")
-        nodes += [n for n in graph if isinstance(n, dict)] if isinstance(graph, list) else [block]
-    return nodes
-
-
-def _types(node: dict[str, Any]) -> set[str]:
-    raw = node.get("@type", [])
-    return {raw} if isinstance(raw, str) else {t for t in raw if isinstance(t, str)}
-
-
 def _local_schema(site: SiteData) -> Finding:
     cid = "local.schema_markup"
     home = site.homepage
     found: set[str] = set()
     for page in site.pages:
-        for node in _schema_nodes(page):
-            found |= _types(node)
+        for node in schema_nodes(page):
+            found |= node_types(node)
     local = found & LOCAL_BUSINESS_TYPES
     if local:
         return finding(
@@ -202,7 +189,7 @@ def _city_in_content(site: SiteData) -> Finding | None:
     home = site.homepage
     city = None
     for page in site.pages:
-        for node in _schema_nodes(page):
+        for node in schema_nodes(page):
             address = node.get("address")
             if isinstance(address, dict) and isinstance(address.get("addressLocality"), str):
                 city = address["addressLocality"].strip()
