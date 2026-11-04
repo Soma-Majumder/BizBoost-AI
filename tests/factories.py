@@ -10,7 +10,9 @@ def make_page(**overrides) -> PageData:
         status_code=200,
         fetch_seconds=0.3,
         title="Example Bakery | Fresh Bread in Brooklyn",
-        meta_description="Family-run bakery in Brooklyn selling fresh bread and pastries.",
+        meta_description=(
+            "Family-run bakery in Brooklyn selling fresh bread, pastries and cakes baked daily."
+        ),
         canonical="https://example.com/",
         lang="en",
         has_viewport=True,
