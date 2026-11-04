@@ -75,8 +75,6 @@ URL entry
 
 ## Getting started
 
-> The project structure and file names below are the planned setup. Update them to match the repo as it's built.
-
 ### Requirements
 
 - Python 3.10+
@@ -87,7 +85,7 @@ URL entry
 
 ```bash
 git clone <your-repo-url>
-cd bizboost-ai
+cd BizBoost-AI
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
@@ -95,7 +93,7 @@ pip install -r requirements.txt
 
 ### Configure
 
-Create a `.env` file in the project root:
+Copy `.env.example` to `.env` in the project root and fill it in:
 
 ```
 PAGESPEED_API_KEY=your_pagespeed_key
@@ -110,6 +108,25 @@ streamlit run app.py
 ```
 
 Open the local URL Streamlit prints, enter a website address, and click **Start Audit**.
+
+### Test
+
+```bash
+pytest
+```
+
+### Project structure
+
+| Path | Purpose |
+| --- | --- |
+| `app.py` | Streamlit interface and audit orchestrator |
+| `crawler/` | Website crawler |
+| `analyzers/` | The five SEO analyzers |
+| `integrations/` | PageSpeed and optional backlinks |
+| `scoring/` | Scoring engine |
+| `agent/` | AI reasoning agent |
+| `tests/` | Tests |
+| `docs/` | PRD and agent architecture |
 
 ---
 
