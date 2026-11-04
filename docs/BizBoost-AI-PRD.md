@@ -1,0 +1,198 @@
+**BizBoost AI**
+
+**Product Requirements Document: Net New Build**
+
+**Build name:** BizBoost AI
+
+**Owner:** Soma Majumder and Erick Marcatoma
+
+**Date:** 11/3/2026
+
+**1\. PROBLEM**
+
+Small-business owners experience difficulty finding and fixing the SEO problems on their websites because professional SEO work (technical and on-page audits, keyword research, content refreshes, and ongoing monitoring) takes specialized skills and expensive tools, resulting in websites that are hard to find in search, missed customers, and no clear idea of what to fix first. A company like B\&H hires a full-time Senior SEO Specialist to audit its site, watch for broken pages, missing metadata and slow speeds, and prioritize fixes using data. A small business cannot afford that role, so it guesses, pays for an agency, or does nothing.
+
+**Supporting Context**
+
+* **Scale:** The U.S. Small Business Administration’s Office of Advocacy reports that the number of small businesses in the U.S. exceeds 36 million. Every one of them with a website competes to be found in search.  
+* **Pain point from the job description:** B\&H’s Senior SEO Specialist role bundles recurring technical and on-page audits; monitoring of crawlability, site speed, XML sitemaps, canonical tags, metadata and redirects; keyword research; and ranking reports. That is a full-time job of specialized work.  
+* **Cost and complexity:** Paid SEO suites are built for marketing professionals, and 2026 reviews cite entry plans starting around \$129 per month (Semrush). Owners who are not SEO experts struggle to turn tool output into action.
+
+**1a. Opportunity**
+
+Enable any small-business owner to get an evidence-based SEO audit in minutes from just a public website URL, with no account, no SEO background and no agency, closing the gap between expensive professional SEO tools and the millions of small businesses that need to be found online.
+
+**Market Opportunity**
+
+* 36+ million U.S. small businesses (SBA Office of Advocacy); entry-level paid SEO suites start around \$129 per month, leaving room for a free, plain-language alternative.  
+* Competitive analysis: see Appendix, section A5.
+
+**1b. Users & Needs**
+
+**Primary users:** Small-business owners (for example shops, restaurants and local service providers) who have a public website, know little about SEO, and want more customers to find them online. They care about plain-language answers and clear next steps.
+
+**Secondary users:** Freelance marketers, web designers and marketing coordinators who support small businesses and want a quick, evidence-based audit to share with a client.
+
+**Key User Needs**
+
+* As a small-business owner, I need to get an SEO audit by entering only my website URL because I do not want to create an account or connect private data.  
+* As a small-business owner, I need to see my SEO health as simple scores and plain language because I do not know SEO terms.  
+* As a small-business owner, I need to see the evidence behind every finding because I need to trust the results are real and not made up.  
+* As a small-business owner, I need to know the top things to fix first because I have limited time and budget.  
+* As a small-business owner, I need missing information labeled “Data unavailable” instead of counted as a failure because I do not want to be scored unfairly.  
+* As a freelance marketer, I need a clear report I can hand to a client because I want to explain what to improve and why.
+
+**2\. PROPOSED SOLUTION**
+
+BizBoost AI is a web app that audits a small business’s website for SEO health and tells the owner what to fix. Users simply enter their public website address, and the system scans up to 10 pages, checks five SEO categories (keywords, content quality, local SEO, technical health, and credibility and backlinks), and calculates scores from measurable evidence. An AI assistant then explains each issue in plain language and recommends prioritized improvements. As a result, owners get the kind of audit a senior SEO specialist would run, in minutes, without SEO expertise or an expensive tool.
+
+**2a. Value Proposition**
+
+Small-business owners who struggle to understand and fix their website’s SEO because it takes specialist skills and costly tools use BizBoost AI, an AI SEO auditing assistant, to scan their public website and get scored, evidence-backed recommendations in minutes. Unlike expensive SEO suites and agencies, it needs no account, no private data and no SEO knowledge, and it clearly marks missing information instead of guessing, helping owners know exactly what to fix first.
+
+**2b. Top 3 MVP Value Props**
+
+**The Vitamin (must-have baseline):** A complete baseline audit of any public small-business website across five SEO categories (keywords, content, local SEO, technical SEO, credibility) with a score for each.
+
+**The Painkiller (solves the core pain):** Turns confusing SEO work into plain-language findings, backed by evidence and a short list of prioritized fixes, with no account, no SEO knowledge and no agency fees.
+
+**The Steroid (the magic moment):** An AI assistant that explains each issue and recommends a specific fix based on evidence from the owner’s own site, and honestly marks “Data unavailable” instead of guessing.
+
+**2c. Goals & Non-Goals**
+
+**Goals**
+
+* Give small-business owners a clear, plain-language picture of their website’s SEO health from just a URL.  
+* Make every finding trustworthy by tying it to evidence from the website or an identified data source.  
+* Help owners know exactly what to fix first through prioritized recommendations.  
+* Keep scoring honest by never penalizing a site for data the tool cannot access.  
+* Deliver a working, demo-ready audit across all five categories within the six-day MVP.
+
+**Non-Goals**
+
+* Private data such as Google Analytics or Search Console, and user accounts: the MVP uses public data only so owners never need to connect anything.  
+* Crawling more than 10 pages per audit: a small crawl keeps the six-day build safe and fast.  
+* Ongoing monitoring, alerts, ranking-position tracking and automated link building: the job description includes these, but they are deferred to a later version.  
+* Required inbound backlink analysis: it depends on a paid third-party provider, so it stays optional and shows “Data unavailable” without one.
+
+**2d. Success Metrics**
+
+| Goal | Signal | Metric | Target |
+| :---- | :---- | :---- | :---- |
+| Clear picture of SEO health | Owners complete an audit from a URL | Audit completion rate on valid public test sites | 90% or more of 10 test sites complete an audit |
+| Fast results | Owners get results without waiting long | Time from Start Audit to displayed report | Under 2 minutes for a scan of up to 10 pages |
+| Evidence-backed findings | Every finding shows where it came from | Share of findings with evidence or an identified data source | 100% of findings |
+| Clear next steps | Report shows what to fix first | Reports with at least 3 prioritized recommendations | 100% of completed reports |
+| Honest scoring | Missing data is labeled, not treated as failure | Data unavailable items counted as zero in any score | 0 items |
+| Plain-language understanding | Test users can explain what to fix after reading the report | Test users who can name their top fix without help | 4 of 5 test users |
+| Demo-ready MVP | All five categories return results | Categories returning a score or Data unavailable label | 5 of 5 by Day 6 |
+| Trustworthy AI explanations | AI recommendations only describe what the scanner found | AI recommendations that cite something not in the evidence, reviewed on the 10 test sites | 0 recommendations |
+
+**3\. REQUIREMENTS**
+
+**User Journey 1: Small-business owner running an SEO audit on their website**
+
+**Context:** This is the core journey. We are optimizing for getting from a URL to results in minutes, with no account and no setup.
+
+**Sub-journey: Starting an audit**
+
+* **\[P0\]** User can learn what BizBoost AI does from a landing page before starting.  
+* **\[P0\]** User can enter a public business website URL and start an audit without creating an account.  
+* **\[P0\]** User can see a clear message if the URL is invalid, unreachable or unsafe to scan, and what to do next.  
+* **\[P1\]** User can enter a web address without typing https\://.  
+* **\[P2\]** User can see an example report before running their own audit.
+
+**Sub-journey: Scanning the website**
+
+* **\[P0\]** User can see that the audit is in progress.  
+* **\[P0\]** User can have up to 10 public pages from their website scanned.  
+* **\[P0\]** User can see a clear message if the website does not allow scanning.  
+* **\[P1\]** User can see which pages were scanned.
+
+**Sub-journey: Running the five SEO checks**
+
+* **\[P0\]** User can get results for keyword optimization, content quality, local SEO, technical SEO, and credibility and backlinks.  
+* **\[P0\]** User can see “Data unavailable” instead of a failing score when information cannot be retrieved.  
+* **\[P1\]** User can see mobile performance and speed results.  
+* **\[P2\]** User can see inbound backlink information when a data provider is available.
+
+**User Journey 2: Small-business owner understanding and acting on the report**
+
+**Context:** The report is the product. We are optimizing for a non-expert understanding what is wrong, why it matters and what to do first.
+
+**Sub-journey: Reading the results**
+
+* **\[P0\]** User can see an overall SEO health score out of 100 and a score for each of the five categories.  
+* **\[P0\]** User can see the evidence behind every finding, including what was found and where.  
+* **\[P0\]** User can read every finding in plain language without SEO jargon.  
+* **\[P1\]** User can tell which findings were measured and which are unavailable.
+
+**Sub-journey: Deciding what to fix**
+
+* **\[P0\]** User can see the top three recommended improvements in priority order.  
+* **\[P0\]** User can see why each issue matters and a specific action to take.  
+* **\[P1\]** User can expand findings by category.  
+* **\[P1\]** User can run a new audit for another website.  
+* **\[P2\]** User can copy or download the report to share with a web developer or colleague.
+
+**4\. APPENDIX**
+
+**A1. How the job description shaped the product**
+
+We started from the B\&H Senior SEO Specialist job description, identified the recurring pain points of doing SEO well, and turned them into what BizBoost AI automates for small businesses.
+
+* Technical and on-page audits; monitoring crawlability, speed, XML sitemaps, canonical tags, metadata and redirects: Technical SEO analyzer plus Google PageSpeed Insights.  
+* Keyword research and knowledge of ranking factors: Keyword Optimization analyzer.  
+* Requesting new or refreshed content and landing-page changes: Content Quality analyzer.  
+* Link building and interlinking: Credibility and Backlinks analyzer (inbound backlinks optional).  
+* Prioritizing projects based on data and reporting status: scoring engine, AI recommendations and report dashboard.  
+* Local SEO was added because small businesses compete for nearby customers.  
+* Deferred from the job description: ongoing alerts, ranking tracking and cross-department coordination.
+
+**A2. Architecture decision**
+
+BizBoost AI is one AI agent supported by five deterministic SEO analyzers, not five independent AI agents. The scanner decides whether something exists (for example, whether a meta description tag is present); the AI only explains the finding and recommends an action. Flow: URL entry, URL validation and safety check, audit orchestrator, website crawler, five analyzers (plus PageSpeed and optional backlink data), evidence and scoring engine, AI reasoning, recommendations and report, Streamlit results dashboard.
+
+**A3. Technology**
+
+Streamlit, Python, BeautifulSoup, Google PageSpeed Insights API and OpenRouter.
+
+**A4. System rules**
+
+* **Public data only:** No private Google Analytics or Search Console access.  
+* **Crawler safety:** Do not scan private IP addresses, localhost or unsafe redirects.  
+* **Respect website access rules:** Check robots.txt, use reasonable crawl limits and identify our crawler.  
+* **Evidence first:** Every finding connects to a measurable check or identified source.  
+* **No invented data:** Missing backlink information stays unavailable, not zero.  
+* **Honest scoring:** Do not penalize businesses for information the tool cannot access. When a check is unavailable, it is dropped from the score and the remaining checks’ weights are rescaled to add up to 100, so the score reflects only what was measured.  
+* **Small crawl:** Maximum 10 pages for the initial version.  
+* **Page selection:** The crawler starts with the homepage, then adds pages listed in the XML sitemap, then internal links found on the homepage, in that order, until it reaches 10 pages. Duplicate and off-site links are skipped.  
+* **PageSpeed scope:** Google PageSpeed Insights runs on the homepage only, at the same time as the crawl, so the full audit stays under the 2-minute target.  
+* **JavaScript-heavy sites:** The crawler reads each page’s HTML as the server sends it; BeautifulSoup cannot see content that is built by JavaScript. When a check cannot see the content it needs for this reason, it shows “Data unavailable”, not a failure.
+
+**A5. Competitive context**
+
+Paid SEO suites such as Semrush, Ahrefs and Moz serve marketing professionals and charge monthly fees. Agencies and in-house specialists cost more. BizBoost AI differentiates by being free to start, account-free, plain-language, and evidence-first.
+
+**A6. Six-day implementation plan**
+
+* Day 1: Streamlit interface, URL validation and crawler. Deliverable: website scanner.  
+* Day 2: Keyword and content analyzers. Deliverable: first two SEO checks.  
+* Day 3: Local, technical and credibility analyzers. Deliverable: all five SEO checks.  
+* Day 4: PageSpeed, optional backlink integration and scoring. Deliverable: evidence-based results.  
+* Day 5: OpenRouter AI reasoning, recommendations and dashboard. Deliverable: AI-powered audit.  
+* Day 6: Testing, bug fixes and presentation. Deliverable: working demo.
+
+**A7. Open questions**
+
+* Which backlink data provider, if any, can we use without a paid account? The integration stays optional.  
+* How should each category be weighted in the overall score?  
+* Which OpenRouter model gives the best balance of cost, speed and explanation quality?  
+* How should Local SEO be handled for businesses where local search is not relevant?
+
+**A8. Risks and how we handle them**
+
+* **PageSpeed is slow or rate-limited:** PageSpeed Insights can take several seconds per page and limits how often it can be called. We run it on the homepage only, at the same time as the crawl, with a 30-second timeout. If it times out or hits a limit, speed results show “Data unavailable” and the rest of the audit still finishes.  
+* **Sites that block crawling:** Some sites block our crawler in robots.txt or with a firewall. We respect the block, stop the scan and tell the user in plain language that the site does not allow scanning. Pages we could not reach are listed as not scanned, never scored as failures.  
+* **The AI explains something that is not in the evidence:** The AI could describe a problem the scanner never found. The AI only receives the scanner’s evidence, is told to explain only what is in it, and every recommendation must name the check it comes from. We review AI output on the 10 test sites and track it in the success metrics (target: 0 unsupported recommendations).
+
