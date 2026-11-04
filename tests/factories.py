@@ -17,7 +17,7 @@ def make_page(**overrides) -> PageData:
         lang="en",
         has_viewport=True,
         headings=(Heading(1, "Example Bakery"), Heading(2, "Our Bread")),
-        text="Fresh bread baked daily in Brooklyn. " * 40,
+        text="Fresh bread baked daily in Brooklyn. " * 60,
         images=(Image("https://example.com/loaf.jpg", "A fresh loaf of bread"),),
         internal_links=(Link("https://example.com/menu/", "Menu"),),
         external_links=(Link("https://www.facebook.com/examplebakery", "Facebook"),),
