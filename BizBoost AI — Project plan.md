@@ -33,7 +33,7 @@ Build runs Nov 4–8 and Nov 10–11. Feature freeze is Nov 11 at 6 pm; after th
 - [ ] Both: agree on the owner split and the 10 test sites
 - [x] Soma: create the repo, Streamlit skeleton, `.env` for API keys
 - [x] Erick: URL validation and safety check (no private IPs, localhost, unsafe redirects)
-- [ ] Soma: get the PageSpeed Insights and Claude API keys and test one call each
+- [x] Soma: get the PageSpeed Insights and Claude API keys and test one call each
 - [ ] Soma: sketch wireframes for the landing page and the results report
 
 ### Thu Nov 5 — Crawler and design
@@ -52,23 +52,27 @@ Build runs Nov 4–8 and Nov 10–11. Feature freeze is Nov 11 at 6 pm; after th
 ### Sat Nov 7 — Scoring
 
 - [x] Soma: technical analyzer
-- [ ] Erick: scoring engine, with unavailable checks dropped and weights rescaled to 100
+- [ ] Erick: scoring engine, with unavailable checks dropped and weights rescaled to 100 (category weights 25/25/20/20/10, PRD A10)
 - [ ] Soma: draft the demo slides
 
 ### Sun Nov 8 — End-to-end run
 
+- [ ] Erick: audit orchestrator that connects crawl, analyzers, PageSpeed and scoring, wired into Streamlit
 - [ ] Both: one site runs end to end from URL to scores (no AI yet)
 - [ ] Both: review the run together and list what broke
+- [ ] Both: decide how Local SEO works for businesses that aren't local
 
 ### Mon Nov 9 — AI and report start
 
 - [ ] Erick: start Claude API integration
 - [ ] Soma: start the results dashboard layout
+- [ ] Soma (optional, first to cut): Crawly backlinks integration; no key, an error or the daily limit shows Data unavailable
 - [ ] Both: fix the bugs found in the Nov 8 run
 
 ### Tue Nov 10 — AI and report
 
 - [ ] Erick: AI explanations and top 3 fixes, each naming the check it comes from
+- [ ] Erick: AI output validator that rejects recommendations not in the evidence, plus rule-based fallback text when Claude is unavailable
 - [ ] Soma: results dashboard with overall and category scores, evidence, and Data unavailable labels
 - [ ] Soma: progress screen and list of scanned pages
 
@@ -114,7 +118,8 @@ Build runs Nov 4–8 and Nov 10–11. Feature freeze is Nov 11 at 6 pm; after th
 
 | Risk | Fallback |
 | --- | --- |
-| Crawler or analyzers run late | Nov 8 end-to-end run is the checkpoint; if it slips, cut P1 and P2 items first (example report, expand-by-category, download) |
+| Build runs late | Nov 8 end-to-end run is the checkpoint; if it slips, cut in this order (PRD A9): backlinks, then P2 items (example report, download), then PageSpeed results, then the extra Local SEO checks. Never cut the validator, crawler, Technical, Keyword and Content analyzers, scoring, the evidence report with top 3 fixes, or the AI fallback text |
+| Claude API rate limit unknown | The SDK retries rate-limit errors; if the AI is still unavailable, the report uses rule-based fallback text |
 | PageSpeed slow or rate-limited during the demo | 30-second timeout shows Data unavailable; the rest of the audit still finishes |
 | Live site blocks the crawler on demo day | Test the demo site that morning and keep a second site ready |
 | AI writes something not in the evidence | Tighten the prompt on Nov 11 and re-review the 10 test sites |
