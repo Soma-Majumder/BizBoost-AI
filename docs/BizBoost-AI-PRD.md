@@ -235,7 +235,7 @@ Every check returns pass, warn, fail or unavailable. Each check has a weight (fo
 | Service | Used for | Status | Cost and limits |
 | :---- | :---- | :---- | :---- |
 | Claude API (Anthropic), model Claude Sonnet 5.5 | Plain-language explanations and the top 3 fixes | Key in hand, $40 of credits | About $2 per million input tokens and $10 per million output tokens (Anthropic’s published rates, October 2026). Our estimate is roughly 10 cents per audit, so about 400 audits. Rate limit: to confirm in the Anthropic Console. |
-| Google PageSpeed Insights API | Homepage speed and mobile results | Key in hand | Daily and per-minute quota: to confirm in the Google Cloud console. |
+| Google PageSpeed Insights API | Homepage speed and mobile results | Key in hand | 25,000 queries per day and 30 per minute, read from the Google Cloud console on 5 Nov 2026 (usage was 0). We run one speed test per audit, so this is far more than we need. |
 | Backlink data provider (optional) | Inbound backlinks | None for the MVP | Not needed to ship, shows “Data unavailable”. First thing cut if time is short. Collaborator’s free checker is a manual reference only (5 checks a day, no backlink API found). |
 
 Keys live in a local `.env` file that is never committed to GitHub (the repository ignores it). The model is set with `ANTHROPIC_MODEL`, so we can compare it with Claude Opus 5.5 on the test sites without changing code.
