@@ -31,27 +31,27 @@ Build runs Nov 4–8 and Nov 10–11. Feature freeze is Nov 11 at 6 pm; after th
 ### Wed Nov 4 — Kickoff
 
 - [ ] Both: agree on the owner split and the 10 test sites
-- [ ] Erick: create the repo, Streamlit skeleton, `.env` for API keys
-- [ ] Erick: URL validation and safety check (no private IPs, localhost, unsafe redirects)
+- [x] Erick: create the repo, Streamlit skeleton, `.env` for API keys
+- [x] Erick: URL validation and safety check (no private IPs, localhost, unsafe redirects)
 - [ ] Soma: get the PageSpeed Insights and OpenRouter API keys and test one call each
 - [ ] Soma: sketch wireframes for the landing page and the results report
 
 ### Thu Nov 5 — Crawler and design
 
-- [ ] Erick: crawler with page selection (homepage, sitemap, homepage links, up to 10) and robots.txt check
+- [x] Erick: crawler with page selection (homepage, sitemap, homepage links, up to 10) and robots.txt check
 - [ ] Erick: clear messages for blocked or unreachable sites
 - [ ] Soma: final wireframes, user flow and architecture diagrams
 - [ ] Soma: start the demo slides
 
 ### Fri Nov 6 — First analyzers
 
-- [ ] Erick: keyword and content analyzers, each finding with its evidence and page
-- [ ] Soma: local SEO and credibility analyzers
+- [x] Erick: keyword and content analyzers, each finding with its evidence and page
+- [x] Soma: local SEO and credibility analyzers
 - [ ] Soma: PageSpeed on the homepage, in parallel with the crawl, 30-second timeout
 
 ### Sat Nov 7 — Scoring
 
-- [ ] Erick: technical analyzer
+- [x] Erick: technical analyzer
 - [ ] Erick: scoring engine, with unavailable checks dropped and weights rescaled to 100
 - [ ] Soma: draft the demo slides
 
