@@ -76,6 +76,7 @@ URL entry
 | Assumption | Basis | Risk | If wrong |
 | --- | --- | --- | --- |
 | The homepage gets the most traffic and matters most for SEO, so we test it first (crawl order and PageSpeed check). | Common for small-business sites; not verified with real analytics. | Medium: some businesses get most visits on Menu, Shop, or Location pages via Google. | Let users choose which page to check first, or prioritize pages using their analytics data. |
+| Impact and Effort ratings (used to pick the top 3 fixes) reflect what helps small-business rankings and what owners can fix themselves. | General SEO best practice; team judgment, not measured. | High: it decides the top 3 fixes, the core of the product. | Test with real owners (did they fix it, did it help?) and adjust the ratings. |
 
 ---
 
