@@ -10,7 +10,7 @@ st.set_page_config(page_title="BizBoost AI", page_icon="🚀")
 def run_audit(url: str) -> None:
     """Placeholder for the audit pipeline (crawl, analyze, score, explain).
 
-    The orchestrator (issue #16) will replace this body.
+    The orchestrator (issue #14) will replace this body.
     """
     st.info(
         "The audit engine isn't connected yet. "

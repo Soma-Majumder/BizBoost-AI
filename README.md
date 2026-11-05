@@ -177,8 +177,8 @@ Open the local URL Streamlit prints, enter a website address, and click **Start 
 
 ## Open questions
 
-- Which backlink data provider, if any, can we use without a paid account?
-- How should each category be weighted in the overall score?
+- Backlinks stay in as an optional feature and are the first thing cut if time is short. Which backlink data provider, if any, can we use without a paid account?
+- Resolved: category weights are Technical 25, Keyword 25, Content 20, Local 20, Credibility and Backlinks 10. A first guess to tune after the 10 test sites.
 - Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Budget: $40 of API credits, roughly 10 cents per audit (estimate). Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.
 - How should Local SEO be handled for businesses where local search doesn't matter?
 

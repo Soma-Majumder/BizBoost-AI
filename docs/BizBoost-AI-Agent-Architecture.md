@@ -66,6 +66,23 @@ Every analyzer returns findings in the same shape, so the scoring engine and the
 }
 ```
 
+## Scoring
+
+Each check returns pass, warn, fail or unavailable, with a weight. Points: pass 1, warn 0.5, fail 0. Unavailable checks are dropped.
+
+- **Category score** = 100 × Σ(weight × points) ÷ Σ(weight), over the measured checks only.
+- **Overall score** = weighted average of the category scores. A category with no measured checks is left out and the remaining weights are rescaled to add up to 100.
+
+| Category | Weight |
+|---|---|
+| Technical SEO | 25 |
+| Keyword Optimization | 25 |
+| Content Quality | 20 |
+| Local SEO | 20 |
+| Credibility and Backlinks | 10 |
+
+Every finding counts: a check that runs on each page contributes once per page. The PRD (A10) has a worked example.
+
 ## How the AI agent behaves
 
 - **Input:** Only the scanner's evidence (findings JSON), the scores and a short business context (name, apparent business type). It gets no raw HTML to improvise from.
@@ -97,8 +114,8 @@ Every analyzer returns findings in the same shape, so the scoring engine and the
 
 ## Open questions from the PRD
 
-- Which backlink data provider, if any, can we use without a paid account? The integration stays optional.
-- How should each category be weighted in the overall score?
+- Backlinks stay in as an optional feature and are the first thing cut if time is short. Still open: which backlink data provider, if any, can we use without a paid account?
+- Resolved: category weights are Technical 25, Keyword 25, Content 20, Local 20, Credibility and Backlinks 10 (see Scoring). They are a first guess to tune after the 10 test sites.
 - Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Budget: $40 of API credits, roughly 10 cents per audit (estimate). Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.
 - How should Local SEO be handled for businesses where local search is not relevant?
 

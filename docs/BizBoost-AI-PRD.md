@@ -185,8 +185,8 @@ Paid SEO suites such as Semrush, Ahrefs and Moz serve marketing professionals an
 
 **A7. Open questions**
 
-* Which backlink data provider, if any, can we use without a paid account? The integration stays optional.  
-* How should each category be weighted in the overall score?  
+* Resolved: backlinks stay in the plan as an optional feature, and they are the first thing cut if time runs short (see A9). Still open: which backlink data provider, if any, can we use without a paid account? Until one is chosen, backlink items show “Data unavailable”.  
+* Resolved: the initial category weights are Technical SEO 25, Keyword Optimization 25, Content Quality 20, Local SEO 20, and Credibility and Backlinks 10 (see A10). They are a first guess and will be tuned after the 10 test sites.  
 * Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Budget: $40 of API credits, roughly 10 cents per audit (estimate). Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.  
 * How should Local SEO be handled for businesses where local search is not relevant?
 
@@ -196,3 +196,73 @@ Paid SEO suites such as Semrush, Ahrefs and Moz serve marketing professionals an
 * **Sites that block crawling:** Some sites block our crawler in robots.txt or with a firewall. We respect the block, stop the scan and tell the user in plain language that the site does not allow scanning. Pages we could not reach are listed as not scanned, never scored as failures.  
 * **The AI explains something that is not in the evidence:** The AI could describe a problem the scanner never found. The AI only receives the scanner’s evidence, is told to explain only what is in it, and every recommendation must name the check it comes from. We review AI output on the 10 test sites and track it in the success metrics (target: 0 unsupported recommendations).
 
+**A9. Scope tiers and fallback plan**
+
+*Build status on 5 Nov 2026:* the URL validator, crawler and all five analyzers are built and tested. Still to build: PageSpeed, the scoring engine, the audit orchestrator, the AI agent with its output validator, the report dashboard, and the 10-site test run.
+
+If time runs short, we protect the core and cut in this order.
+
+* **Must ship, never cut:** URL validation, the crawler, the Technical, Keyword and Content analyzers, the scoring engine, the report with evidence and a top 3 fixes list, and AI explanations with the rule-based fallback text.  
+* **Ship a simpler version:** Local SEO keeps only the phone number, address and map checks.  
+* **Cut first, in this order:**  
+  1. Inbound backlinks (the optional provider). The checks stay and show “Data unavailable”.  
+  2. P2 items: the example report and copy or download of the report.  
+  3. PageSpeed results. Speed items show “Data unavailable” and the rest of the audit still works.  
+  4. The extra Local SEO checks above.
+
+**A10. How the score is calculated**
+
+Every check returns pass, warn, fail or unavailable. Each check has a weight (for example, a missing title counts 3 and a missing language tag counts 1).
+
+* **Check points:** pass = 1, warn = half a point, fail = 0. A check that is unavailable is dropped, not counted as 0.  
+* **Category score (0 to 100):** add up weight × points for the measured checks, divide by the total weight of those checks, and multiply by 100.  
+* **Overall score (0 to 100):** the weighted average of the category scores, using the category weights below. A category with no measured checks is left out and the other weights are rescaled to add up to 100.
+
+| Category | Weight |
+| :---- | :---- |
+| Technical SEO | 25 |
+| Keyword Optimization | 25 |
+| Content Quality | 20 |
+| Local SEO | 20 |
+| Credibility and Backlinks | 10 |
+
+**Example:** a category has three checks, each with weight 3. The title passes, the meta description fails and the H1 warns: (3×1 + 3×0 + 3×0.5) ÷ 9 × 100 = 50. Now say the title and meta description both pass and the H1 check is unavailable. The score is (3×1 + 3×1) ÷ 6 × 100 = 100, not the 67 it would be if unavailable counted as a failure.
+
+**Worked example (veganbodhi.com):** the category scores were Technical 100, Keywords 69, Content 70, Local 83 and Credibility 94. Overall = (100×25 + 69×25 + 70×20 + 83×20 + 94×10) ÷ 100, about 82 out of 100.
+
+**A11. Accounts, keys and limits**
+
+| Service | Used for | Status | Cost and limits |
+| :---- | :---- | :---- | :---- |
+| Claude API (Anthropic), model Claude Sonnet 5.5 | Plain-language explanations and the top 3 fixes | Key in hand, $40 of credits | About $2 per million input tokens and $10 per million output tokens (Anthropic’s published rates, October 2026). Our estimate is roughly 10 cents per audit, so about 400 audits. Rate limit: to confirm in the Anthropic Console. |
+| Google PageSpeed Insights API | Homepage speed and mobile results | Key in hand | Daily and per-minute quota: to confirm in the Google Cloud console. |
+| Backlink data provider (optional) | Inbound backlinks | No provider chosen yet | Not needed to ship. First thing cut if time is short. |
+
+Keys live in a local `.env` file that is never committed to GitHub (the repository ignores it). The model is set with `ANTHROPIC_MODEL`, so we can compare it with Claude Opus 5.5 on the test sites without changing code.
+
+**A12. What data is stored**
+
+Nothing is stored after the audit. The website address, the scanned pages, the findings and the report exist in memory only while the audit runs and the results are on screen. There are no accounts, no database and no saved reports, and the app never touches private data such as Google Analytics.
+
+Two outside services receive data to do their job: Google PageSpeed receives the homepage address, and the Claude API receives the findings and scores as text (the evidence, not the raw page HTML). Each provider handles what it receives under its own terms.
+
+**A13. End-to-end scenario**
+
+*An illustration using the real public site https://www.veganbodhi.com/ as a test case. Numbers come from a run of the analyzers built so far on 5 Nov 2026; speed results are not included yet, so they show “Data unavailable”.*
+
+**The restaurant owner**
+
+1. The owner of a restaurant opens BizBoost AI, types `veganbodhi.com` without `https://`, and clicks Start Audit. No account is needed. The app checks the address and turns it into `https://www.veganbodhi.com/`.  
+2. The app scans the 5 pages listed in the site’s sitemap. In our test the scan took under 2 seconds. The full report target is under 2 minutes.  
+3. The report shows an overall score of about 82 out of 100 and five category scores. Technical SEO is strong, and Keywords and Content are the lowest.  
+4. Every finding shows its evidence. For example: “Meta description tag is missing” on the homepage.  
+5. Gaps are labeled honestly. The contact, menu and about pages are built with JavaScript, so their text and heading checks show “Data unavailable” instead of failing. Backlinks and speed also show “Data unavailable”.  
+6. The AI picks the top 3 fixes in plain language, each naming the check it came from:  
+   * **Add a meta description to the homepage.** It is the short text shown under your link in search results, and yours is missing. Write one or two sentences about what you serve and where you are.  
+   * **Add alt text to your photos.** 12 of the 14 homepage images have none. A short description of each dish or room helps search engines and screen readers.  
+   * **Add local business markup.** Your page already shows a phone number, an address and a map, but search engines are not told in a form they can read. Adding Restaurant structured data fixes that.  
+7. The owner makes the first fix in their website editor and runs a new audit to see the score change.
+
+**The freelancer**
+
+A freelance web designer runs the same audit for a client before a meeting. They read the findings by category, use the evidence to show the client what is wrong, and hand over the top 3 fixes as the to-do list. Copying or downloading the report is a P2 feature; until then they share the on-screen report.
