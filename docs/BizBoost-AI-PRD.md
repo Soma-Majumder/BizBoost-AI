@@ -6,7 +6,7 @@
 
 **Owner:** Soma Majumder and Erick Marcatoma
 
-**Date:** 11/3/2026
+**Date:** 11/5/2026
 
 **1\. PROBLEM**
 
@@ -73,7 +73,7 @@ Small-business owners who struggle to understand and fix their website’s SEO b
 * Private data such as Google Analytics or Search Console, and user accounts: the MVP uses public data only so owners never need to connect anything.  
 * Crawling more than 10 pages per audit: a small crawl keeps the six-day build safe and fast.  
 * Ongoing monitoring, alerts, ranking-position tracking and automated link building: the job description includes these, but they are deferred to a later version.  
-* Required inbound backlink analysis: it depends on a paid third-party provider, so it stays optional and shows “Data unavailable” without one.
+* Required inbound backlink analysis: it depends on a third-party provider with a small free limit, so it stays optional and shows “Data unavailable” without one.
 
 **2d. Success Metrics**
 
@@ -155,7 +155,7 @@ BizBoost AI is one AI agent supported by five deterministic SEO analyzers, not f
 
 **A3. Technology**
 
-Streamlit, Python, BeautifulSoup, Google PageSpeed Insights API and the Claude API (Anthropic).
+Streamlit, Python, BeautifulSoup, Google PageSpeed Insights API, the Claude API (Anthropic) and, optionally, the Crawly API for backlinks.
 
 **A4. System rules**
 
@@ -185,7 +185,7 @@ Paid SEO suites such as Semrush, Ahrefs and Moz serve marketing professionals an
 
 **A7. Open questions**
 
-* Resolved: no backlink provider for the MVP. Backlinks stay in as an optional feature and are the first thing cut if time is short, so inbound backlink items show “Data unavailable”. Collaborator’s free Backlink Checker (powered by SE Ranking) is only a manual reference: it is a web form limited to 5 checks a day (20 with an account) and no backlink API was found, so we do not automate it. Version 2 idea: a provider with a real API, such as the SE Ranking API (price and terms not yet checked).  
+* Resolved: backlinks stay in as an optional feature and are the first thing cut if time runs short. Provider: the free Crawly API (getcrawly.com), tested on 5 Nov 2026 on veganbodhi.com, which returned 18 referring domains. Limit: 100 requests a day, one call per audit. Crawly uses an open web index that may be incomplete, so no data, a missing key or an error shows “Data unavailable”, never zero and never a failure. Collaborator’s free Backlink Checker (a web form, 5 checks a day, no backlink API found) is only a manual reference.  
 * Resolved: the initial category weights are Technical SEO 25, Keyword Optimization 25, Content Quality 20, Local SEO 20, and Credibility and Backlinks 10 (see A10). They are a first guess and will be tuned after the 10 test sites.  
 * Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Budget: $40 of API credits, roughly 10 cents per audit (estimate). Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.  
 * How should Local SEO be handled for businesses where local search is not relevant?
@@ -228,6 +228,8 @@ Every check returns pass, warn, fail or unavailable. Each check has a weight (fo
 
 **Example:** a category has three checks, each with weight 3. The title passes, the meta description fails and the H1 warns: (3×1 + 3×0 + 3×0.5) ÷ 9 × 100 = 50. Now say the title and meta description both pass and the H1 check is unavailable. The score is (3×1 + 3×1) ÷ 6 × 100 = 100, not the 67 it would be if unavailable counted as a failure.
 
+**Backlink checks (initial rule, to tune on the test sites):** 10 or more referring domains passes, 1 to 9 warns, and none found warns with a note that the index may be incomplete. A toxic link warns. A missing key, an error or the daily limit gives “Data unavailable”. Backlinks never fail a site, because the data is incomplete.
+
 **Worked example (veganbodhi.com):** the category scores were Technical 100, Keywords 69, Content 70, Local 83 and Credibility 94. Overall = (100×25 + 69×25 + 70×20 + 83×20 + 94×10) ÷ 100, about 82 out of 100.
 
 **A11. Accounts, keys and limits**
@@ -236,7 +238,7 @@ Every check returns pass, warn, fail or unavailable. Each check has a weight (fo
 | :---- | :---- | :---- | :---- |
 | Claude API (Anthropic), model Claude Sonnet 5.5 | Plain-language explanations and the top 3 fixes | Key provided by the school, $40 of credits | About $2 per million input tokens and $10 per million output tokens (Anthropic’s published rates, October 2026). Our estimate is roughly 10 cents per audit, so about 400 audits. Rate limit: not known. The school provided the key and no limit has been shared with us, so we plan for the unknown: the SDK retries rate-limit errors automatically, and if the AI is still unavailable the report falls back to rule-based text. |
 | Google PageSpeed Insights API | Homepage speed and mobile results | Key in hand | 25,000 queries per day and 30 per minute, read from the Google Cloud console on 5 Nov 2026 (usage was 0). We run one speed test per audit, so this is far more than we need. |
-| Backlink data provider (optional) | Inbound backlinks | None for the MVP | Not needed to ship, shows “Data unavailable”. First thing cut if time is short. Collaborator’s free checker is a manual reference only (5 checks a day, no backlink API found). |
+| Crawly API (optional) | Inbound backlinks | Key in hand | Free, no credit card, 100 requests per day (one call per audit). Tested on 5 Nov 2026. Not needed to ship, shows “Data unavailable” without it. First thing cut if time is short. |
 
 Keys live in a local `.env` file that is never committed to GitHub (the repository ignores it). The model is set with `ANTHROPIC_MODEL`, so we can compare it with Claude Opus 5.5 on the test sites without changing code.
 
