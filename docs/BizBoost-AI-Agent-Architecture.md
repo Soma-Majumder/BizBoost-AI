@@ -125,7 +125,8 @@ Every finding counts: a check that runs on each page contributes once per page. 
 
 | Path | What it does |
 |---|---|
-| `app.py` | Streamlit interface. The audit orchestrator will connect the pieces below. |
+| `app.py` | Streamlit interface |
+| `orchestrator.py` | Audit orchestrator: runs the crawl and PageSpeed in parallel, then the analyzers and scoring, and handles blocked sites and partial failures |
 | `url_validator.py` | URL validation and safety checks (also used by the crawler on every URL) |
 | `findings.py` | The findings data contract |
 | `crawler/website_crawler.py` | Crawler: robots.txt, sitemap, internal links, up to 10 pages |
@@ -135,5 +136,7 @@ Every finding counts: a check that runs on each page contributes once per page. 
 | `integrations/backlinks.py` | Crawly backlink connector (optional) |
 | `integrations/pagespeed.py` | PageSpeed connector (to build) |
 | `scoring/score_engine.py` | Scoring engine (to build) |
-| `agent/reasoning.py` | AI agent (to build) |
+| `agent/reasoning.py` | AI agent |
+| `agent/output_validator.py` | Output validator: checks the AI's answer against the evidence, retries once, then falls back |
+| `agent/fallback_text.py` | Rule-based text used when AI explanations are rejected or unavailable |
 | `tests/` | Tests for everything built so far |
