@@ -1,21 +1,60 @@
-"""BizBoost AI: Streamlit interface and audit orchestrator."""
+"""BizBoost AI: Streamlit interface. The audit itself runs in ``orchestrator.py``."""
 
 import streamlit as st
+from dotenv import load_dotenv
 
+from orchestrator import AuditResult, run_audit
 from url_validator import URLValidationError, validate_url
+
+load_dotenv()  # API keys from .env, read by the PageSpeed, backlink and AI integrations
 
 st.set_page_config(page_title="BizBoost AI", page_icon="🚀")
 
+CATEGORY_LABELS = {
+    "technical_seo": "Technical SEO",
+    "keyword_optimization": "Keywords",
+    "content_quality": "Content",
+    "local_seo": "Local SEO",
+    "credibility_backlinks": "Credibility",
+}
+DATA_UNAVAILABLE = "Data unavailable"
 
-def run_audit(url: str) -> None:
-    """Placeholder for the audit pipeline (crawl, analyze, score, explain).
 
-    The orchestrator (issue #14) will replace this body.
-    """
-    st.info(
-        "The audit engine isn't connected yet. "
-        "Your address passed validation and is ready to scan."
-    )
+def show_audit(url: str) -> None:
+    progress = st.progress(0.0, text="Starting the scan...")
+
+    def on_progress(done: int, total: int) -> None:
+        progress.progress(min(done / total, 1.0), text=f"Scanned {done} of {total} pages")
+
+    with st.spinner("Running your audit. This can take up to 2 minutes."):
+        result = run_audit(url, on_progress=on_progress)
+    progress.empty()
+
+    if result.completed:
+        show_scores(result)
+    else:
+        st.warning(result.site.message)
+    show_pages(result)
+
+
+def show_scores(result: AuditResult) -> None:
+    """A simple score summary. The full results dashboard is issue #17."""
+    st.metric("Overall score", _score_text(result.scores.overall))
+    categories = result.scores.categories
+    for column, key in zip(st.columns(len(CATEGORY_LABELS)), CATEGORY_LABELS):
+        column.metric(CATEGORY_LABELS[key], _score_text(categories[key].score))
+
+
+def show_pages(result: AuditResult) -> None:
+    st.write(f"Pages scanned: {len(result.site.pages)}")
+    if result.site.not_scanned:
+        with st.expander(f"Pages not scanned: {len(result.site.not_scanned)}"):
+            for page in result.site.not_scanned:
+                st.markdown(f"- `{page.url}`: {page.reason}")
+
+
+def _score_text(score: float | None) -> str:
+    return DATA_UNAVAILABLE if score is None else f"{round(score)} / 100"
 
 
 def show_landing() -> None:
@@ -64,7 +103,7 @@ def main() -> None:
         return
 
     st.success(f"Scanning {url}")
-    run_audit(url)
+    show_audit(url)
 
 
 main()
