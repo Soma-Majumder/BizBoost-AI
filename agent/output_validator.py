@@ -68,7 +68,9 @@ _NUMBER_WORDS = {
 _NUMBER_WORD_RE = re.compile(rf"\b(?:{'|'.join(_NUMBER_WORDS)})\b", re.I)
 _CLAIM_RE = re.compile(
     r"\b(?:hundreds?|thousands?|millions?|billions?|dozens?|twice|double(?!-check)\w*|triple\w*"
-    r"|percent\w*|competitors?|rivals?|first page of|page one of|number one|top of google)\b",
+    r"|percent\w*|competitors?|rivals?|first page of|page one of|number one|top of google"
+    r"|rank\w*|traffic|bounce\w*|penali[sz]\w*|conversions?"
+    r"|most (?:people|users|visitors|customers|shoppers))\b",
     re.I,
 )
 # A check that could not be measured has no result, so it cannot be judged.
@@ -220,10 +222,20 @@ def _cited_id(
 
 
 def _check_claims(text: str, check_id: str, group: list[Finding]) -> list[str]:
-    """Numbers and claims must come from this check's evidence, or count its own findings."""
+    """Numbers and claims must come from this check's evidence, or count its own findings.
+
+    Counts of the check's own findings are allowed: how many there are, how many failed or
+    warned, and how many different pages they cover (a page can appear twice).
+    """
     relevant = [item for item in group if item.status is not Status.PASS]
     evidence = " ".join(item.evidence for item in relevant)
-    allowed = _numbers(evidence) | {Decimal(len(relevant))}
+    own_counts = {
+        len(relevant),
+        sum(1 for item in relevant if item.status is Status.FAIL),
+        sum(1 for item in relevant if item.status is Status.WARN),
+        len({item.page for item in relevant if item.page}),
+    }
+    allowed = _numbers(evidence) | {Decimal(count) for count in own_counts}
     evidence_lower = evidence.lower()
 
     problems = [

@@ -315,6 +315,57 @@ def test_a_claim_is_allowed_when_it_is_in_the_evidence():
     assert validate_output(output, findings) == []
 
 
+@pytest.mark.parametrize(
+    "text, complaint",
+    [
+        ("Pages like this rarely rank well in search results.", '"rank'),
+        ("Slow pages hurt your traffic.", '"traffic" is not'),
+        ("Most people will not wait that long.", '"most people" is not'),
+        ("Most visitors leave slow pages.", '"most visitors" is not'),
+        ("Google may penalize this.", '"penali'),
+        ("It raises your bounce rate.", '"bounce" is not'),
+        ("It lowers conversions.", '"conversions" is not'),
+    ],
+)
+def test_ranking_traffic_and_visitor_behavior_claims_need_evidence(text, complaint):
+    assert complaint in problems_text(with_entry({**entry(META), "why_it_matters": text}))
+
+
+def test_a_ranking_claim_is_allowed_when_the_scanner_evidence_says_it():
+    # The word count rule's own wording mentions rankings, so repeating it is supported.
+    findings = [finding("a.b", Category.CONTENT_QUALITY, "fail",
+                        "Only 53 words of text. Pages with very little text rarely rank well.")]
+    output = {
+        "findings": [entry("a.b", "Only 53 words.", "Pages with very little text rarely rank well.")],
+        "top_priorities": [priority("a.b")],
+    }
+    assert validate_output(output, findings) == []
+
+
+def pages_findings(*statuses_and_pages):
+    return [finding("a.b", Category.KEYWORD_OPTIMIZATION, status, "Meta description tag is missing.",
+                    page=page) for status, page in statuses_and_pages]
+
+
+def count_output(text):
+    return {"findings": [entry("a.b", text)], "top_priorities": [priority("a.b")]}
+
+
+def test_counts_of_the_checks_own_findings_are_allowed():
+    findings = pages_findings(("fail", "https://e.com/a"), ("fail", "https://e.com/b"),
+                              ("warn", "https://e.com/c"), ("warn", "https://e.com/c"))
+    # 4 entries, 2 failed, 2 warned, 3 different pages (a page can appear twice).
+    for text in ("4 pages are affected.", "2 pages fail.", "2 pages warn.", "3 different pages."):
+        assert validate_output(count_output(text), findings) == [], text
+    assert "5 is not" in "\n".join(validate_output(count_output("5 pages are affected."), findings))
+
+
+@pytest.mark.parametrize("invented", ["Aim for 70 to 160 characters.", "Write at least 100 words."])
+def test_invented_guideline_numbers_are_still_rejected(invented):
+    findings = pages_findings(("fail", "https://e.com/a"), ("fail", "https://e.com/b"))
+    assert validate_output(count_output(invented), findings)
+
+
 # --- Unavailable checks ---
 
 
