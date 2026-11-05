@@ -11,6 +11,14 @@ Big companies like B&H pay a full-time Senior SEO Specialist to audit their webs
 - **Small-business owners** (shops, restaurants, local services) who have a website, know little about SEO, and want more customers to find them online.
 - **Freelance marketers and web designers** who want a quick, evidence-based audit to share with a client.
 
+## User stories
+
+1. **The new café owner:** As a café owner who just launched a website, I want to enter my URL and see an overall SEO score, so that I know whether people can even find my site on Google.
+2. **The busy plumber:** As a plumber with no time to learn SEO, I want to see just the top 3 things to fix first, so that I can spend my one free hour where it matters most.
+3. **The skeptical boutique owner:** As a boutique owner who's been burned by agencies, I want to see the evidence behind every finding, like which page has the problem, so that I can trust the results are real and not a sales pitch.
+4. **The restaurant owner losing nearby customers:** As a restaurant owner, I want to know whether my address, phone number and hours are easy for Google to find, so that people searching nearby can find me instead of my competitor.
+5. **The owner who hands it off:** As a salon owner who pays a web designer, I want a clear report I can download and send to her, so that she knows exactly what to fix without me having to explain SEO.
+
 ## What it does
 
 1. **You enter a public website URL.** No sign-up and no private data.
@@ -75,6 +83,8 @@ URL entry
 
 ## Getting started
 
+> The project structure and file names below are the planned setup. Update them to match the repo as it's built.
+
 ### Requirements
 
 - Python 3.10+
@@ -85,7 +95,7 @@ URL entry
 
 ```bash
 git clone <your-repo-url>
-cd BizBoost-AI
+cd bizboost-ai
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
@@ -93,7 +103,7 @@ pip install -r requirements.txt
 
 ### Configure
 
-Copy `.env.example` to `.env` in the project root and fill it in:
+Create a `.env` file in the project root:
 
 ```
 PAGESPEED_API_KEY=your_pagespeed_key
@@ -108,25 +118,6 @@ streamlit run app.py
 ```
 
 Open the local URL Streamlit prints, enter a website address, and click **Start Audit**.
-
-### Test
-
-```bash
-pytest
-```
-
-### Project structure
-
-| Path | Purpose |
-| --- | --- |
-| `app.py` | Streamlit interface and audit orchestrator |
-| `crawler/` | Website crawler |
-| `analyzers/` | The five SEO analyzers |
-| `integrations/` | PageSpeed and optional backlinks |
-| `scoring/` | Scoring engine |
-| `agent/` | AI reasoning agent |
-| `tests/` | Tests |
-| `docs/` | PRD and agent architecture |
 
 ---
 
