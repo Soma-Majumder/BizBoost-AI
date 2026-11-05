@@ -71,6 +71,14 @@ URL entry
 
 ---
 
+## Assumptions
+
+| Assumption | Basis | Risk | If wrong |
+| --- | --- | --- | --- |
+| The homepage gets the most traffic and matters most for SEO, so we test it first (crawl order and PageSpeed check). | Common for small-business sites; not verified with real analytics. | Medium: some businesses get most visits on Menu, Shop, or Location pages via Google. | Let users choose which page to check first, or prioritize pages using their analytics data. |
+
+---
+
 ## Tech stack
 
 - **Python**
