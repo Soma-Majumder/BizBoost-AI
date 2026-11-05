@@ -125,7 +125,8 @@ Every finding counts: a check that runs on each page contributes once per page. 
 
 | Path | What it does |
 |---|---|
-| `app.py` | Streamlit interface |
+| `app.py` | Streamlit interface and results dashboard |
+| `report.py` | Report generator: combines the audit and its explanations into one report, and the plain-text download |
 | `orchestrator.py` | Audit orchestrator: runs the crawl and PageSpeed in parallel, then the analyzers and scoring, and handles blocked sites and partial failures |
 | `url_validator.py` | URL validation and safety checks (also used by the crawler on every URL) |
 | `findings.py` | The findings data contract |
