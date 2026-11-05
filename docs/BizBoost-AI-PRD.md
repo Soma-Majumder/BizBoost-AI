@@ -230,7 +230,7 @@ Every check returns pass, warn, fail or unavailable. Each check has a weight (fo
 
 **Backlink checks (initial rule, to tune on the test sites):** 10 or more referring domains passes, 1 to 9 warns, and none found warns with a note that the index may be incomplete. A toxic link warns. A missing key, an error or the daily limit gives “Data unavailable”. Backlinks never fail a site, because the data is incomplete.
 
-**Worked example (veganbodhi.com):** the category scores were Technical 100, Keywords 69, Content 70, Local 83 and Credibility 94. Overall = (100×25 + 69×25 + 70×20 + 83×20 + 94×10) ÷ 100, about 82 out of 100.
+**Worked example (veganbodhi.com):** the category scores were Technical 100, Keywords 69, Content 70, Local 83 and Credibility 95. Overall = (100×25 + 69×25 + 70×20 + 83×20 + 95×10) ÷ 100, about 82 out of 100.
 
 **A11. Accounts, keys and limits**
 
@@ -250,15 +250,15 @@ Two outside services receive data to do their job: Google PageSpeed receives the
 
 **A13. End-to-end scenario**
 
-*An illustration using the real public site https://www.veganbodhi.com/ as a test case. Numbers come from a run of the analyzers built so far on 5 Nov 2026; speed results are not included yet, so they show “Data unavailable”.*
+*An illustration using the real public site https://www.veganbodhi.com/ as a test case. Numbers come from a run of the analyzers built so far on 5 Nov 2026; speed results are not included yet, so they show “Data unavailable”. Backlinks come from the Crawly connector.*
 
 **The restaurant owner**
 
 1. The owner of a restaurant opens BizBoost AI, types `veganbodhi.com` without `https://`, and clicks Start Audit. No account is needed. The app checks the address and turns it into `https://www.veganbodhi.com/`.  
 2. The app scans the 5 pages listed in the site’s sitemap. In our test the scan took under 2 seconds. The full report target is under 2 minutes.  
 3. The report shows an overall score of about 82 out of 100 and five category scores. Technical SEO is strong, and Keywords and Content are the lowest.  
-4. Every finding shows its evidence. For example: “Meta description tag is missing” on the homepage.  
-5. Gaps are labeled honestly. The contact, menu and about pages are built with JavaScript, so their text and heading checks show “Data unavailable” instead of failing. Backlinks and speed also show “Data unavailable”.  
+4. Every finding shows its evidence. For example: “Meta description tag is missing” on the homepage, and “18 referring domains found in Crawly's open web index”.  
+5. Gaps are labeled honestly. The contact, menu and about pages are built with JavaScript, so their text and heading checks show “Data unavailable” instead of failing. Speed also shows “Data unavailable” because PageSpeed is not connected yet.  
 6. The AI picks the top 3 fixes in plain language, each naming the check it came from:  
    * **Add a meta description to the homepage.** It is the short text shown under your link in search results, and yours is missing. Write one or two sentences about what you serve and where you are.  
    * **Add alt text to your photos.** 12 of the 14 homepage images have none. A short description of each dish or room helps search engines and screen readers.  
