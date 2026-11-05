@@ -1,6 +1,6 @@
 # BizBoost AI: Agent Architecture
 
-One AI agent, supported by five deterministic SEO analyzers. Six-day MVP. Updated to match the PRD dated 11/3/2026.
+One AI agent, supported by five deterministic SEO analyzers. Six-day MVP. Updated to match the PRD dated 11/5/2026.
 
 ## Core idea
 
@@ -19,7 +19,7 @@ User enters URL (Streamlit)
       |           -> 5 deterministic analyzers (keyword, content, local, technical,
       |              credibility)
       |- Google PageSpeed API (homepage only, 30-second timeout; feeds Technical SEO)
-      |- Backlink provider (optional; feeds Credibility)
+      |- Backlink provider (optional, Crawly API; feeds Credibility)
   -> Evidence + scoring engine (unavailable checks dropped, weights rescaled to 100)
   -> AI reasoning agent (Claude API)
   -> Output validator
@@ -37,7 +37,7 @@ The diagram is in `bizboost-agent-architecture.png`.
 | Crawler | Deterministic | Valid URL | Page data for up to 10 pages, or a "site does not allow scanning" status. Pages it could not reach are listed as not scanned |
 | 5 analyzers | Deterministic | Page data | A list of findings, each with a check ID, status, evidence and source |
 | PageSpeed | External API | Homepage URL | Speed and mobile metrics, or unavailable after a 30-second timeout or rate limit |
-| Backlink provider | External API (optional) | URL | Inbound link data, or unavailable |
+| Backlink provider (Crawly) | External API (optional) | Website domain | Referring domain count and toxic-link flags, or unavailable |
 | Scoring engine | Deterministic | Findings | Category scores and an overall score out of 100; unavailable checks are dropped and the remaining weights rescaled to add up to 100 |
 | AI reasoning agent | LLM | Findings and scores as JSON | Explanation, why it matters and recommended action per finding (each naming its check), plus the top 3 priorities |
 | Output validator | Deterministic | AI output | Pass or reject |
@@ -52,7 +52,9 @@ The diagram is in `bizboost-agent-architecture.png`.
 
 ## The data contract
 
-Every analyzer returns findings in the same shape, so the scoring engine and the AI never guess. Status is one of `pass`, `fail`, `warn` or `unavailable`. A missing backlink API key gives `unavailable`, never `0`.
+Every analyzer returns findings in the same shape, so the scoring engine and the AI never guess. Status is one of `pass`, `fail`, `warn` or `unavailable`. A missing backlink API key gives `unavailable`, never `0`. `page` is optional (site-wide checks leave it out), `source` is `crawler`, `pagespeed` or `backlink_provider`, and `weight` is a whole number of 1 or more. A finding with no evidence is rejected. The code is in `findings.py`.
+
+The crawler hands the analyzers a `SiteData` object (pages, pages not scanned, robots.txt and sitemap details), defined in `crawler/models.py`. Each analyzer is `analyze(site) -> list[Finding]`.
 
 ```json
 {
@@ -109,7 +111,7 @@ Every finding counts: a check that runs on each page contributes once per page. 
 | PageSpeed times out (30 seconds) or hits a rate limit | Technical SEO continues with the deterministic checks, the speed items show "Data unavailable" and the rest of the audit finishes |
 | Crawler blocked by robots.txt or a firewall | Stop the scan, tell the user the site does not allow scanning and list pages as not scanned |
 | Content built by JavaScript | Affected checks show "Data unavailable", not a failure |
-| No backlink provider | Backlink items show "Data unavailable", and the audit continues |
+| No backlink key, or the backlink provider times out, rejects the key or hits its daily limit | Backlink items show "Data unavailable", and the audit continues |
 | Claude API fails | Show scores and findings with rule-based text, plus a note that AI explanations are unavailable |
 
 ## Open questions from the PRD
@@ -117,8 +119,21 @@ Every finding counts: a check that runs on each page contributes once per page. 
 - Resolved: backlinks stay in as an optional feature and are the first thing cut if time runs short. Provider: the free Crawly API (getcrawly.com), tested on 5 Nov 2026 on veganbodhi.com, which returned 18 referring domains. Limit: 100 requests a day, one call per audit. Crawly uses an open web index that may be incomplete, so no data, a missing key or an error shows “Data unavailable”, never zero and never a failure. Collaborator’s free Backlink Checker (a web form, 5 checks a day, no backlink API found) is only a manual reference.
 - Resolved: category weights are Technical 25, Keyword 25, Content 20, Local 20, Credibility and Backlinks 10 (see Scoring). They are a first guess to tune after the 10 test sites.
 - Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Budget: $40 of API credits, roughly 10 cents per audit (estimate). Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.
-- How should Local SEO be handled for businesses where local search is not relevant?
+- How should Local SEO be handled for businesses where local search is not relevant? The Local SEO analyzer can already be skipped (`local_relevant=False`, which gives "Data unavailable"), but the checkbox in the interface is not built yet.
 
 ## Mapping to the project structure
 
-`app.py` is the interface and orchestrator. `crawler/website_crawler.py` is the crawler. The `analyzers/` folder holds the five checks (`keyword.py`, `content.py`, `local_seo.py`, `technical.py`, `credibility.py`). `integrations/` holds PageSpeed and backlinks. `scoring/score_engine.py` is scoring and `agent/reasoning.py` is the AI agent. `tests/test_audit.py` covers it, and the URL validator lives in `app.py` or a small utils file.
+| Path | What it does |
+|---|---|
+| `app.py` | Streamlit interface. The audit orchestrator will connect the pieces below. |
+| `url_validator.py` | URL validation and safety checks (also used by the crawler on every URL) |
+| `findings.py` | The findings data contract |
+| `crawler/website_crawler.py` | Crawler: robots.txt, sitemap, internal links, up to 10 pages |
+| `crawler/parser.py` | Turns one page's HTML into page data |
+| `crawler/models.py` | The page data shape (`PageData`, `SiteData`) |
+| `analyzers/` | The five checks: `keyword.py`, `content.py`, `local_seo.py`, `technical.py`, `credibility.py` |
+| `integrations/backlinks.py` | Crawly backlink connector (optional) |
+| `integrations/pagespeed.py` | PageSpeed connector (to build) |
+| `scoring/score_engine.py` | Scoring engine (to build) |
+| `agent/reasoning.py` | AI agent (to build) |
+| `tests/` | Tests for everything built so far |
