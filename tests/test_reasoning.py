@@ -203,3 +203,9 @@ def test_client_uses_our_timeout_and_retries(monkeypatch):
     client = reasoning.get_client()
     assert client.max_retries == reasoning.MAX_RETRIES
     assert client.timeout == reasoning.REQUEST_TIMEOUT
+
+
+def test_the_prompt_forbids_invented_numbers_and_ranking_claims():
+    prompt = reasoning.SYSTEM_PROMPT
+    assert "invent thresholds" in prompt and "recommended lengths" in prompt
+    assert "search rankings, traffic" in prompt and "unless the evidence itself says it" in prompt
