@@ -18,7 +18,7 @@ Erick owns the audit engine; Soma owns the user-facing side and the design story
 | --- | --- | --- |
 | Scanning | Repo, URL validation and safety check, crawler, page selection, robots.txt | Pick and document the 10 test sites |
 | SEO checks | Keyword, content and technical analyzers, scoring engine | Local SEO and credibility analyzers, PageSpeed integration |
-| AI | OpenRouter prompts, top 3 fixes, evidence citation rule | Review AI output for plain language |
+| AI | Claude API prompts, top 3 fixes, evidence citation rule | Review AI output for plain language |
 | Interface | Wire the engine into Streamlit | Landing page, progress screen, results dashboard, error messages |
 | Design | Architecture diagram | Wireframes, user flow diagram |
 | Presenting | Live demo driver | Slides and narration |
@@ -33,7 +33,7 @@ Build runs Nov 4–8 and Nov 10–11. Feature freeze is Nov 11 at 6 pm; after th
 - [ ] Both: agree on the owner split and the 10 test sites
 - [x] Soma: create the repo, Streamlit skeleton, `.env` for API keys
 - [x] Erick: URL validation and safety check (no private IPs, localhost, unsafe redirects)
-- [ ] Soma: get the PageSpeed Insights and OpenRouter API keys and test one call each
+- [ ] Soma: get the PageSpeed Insights and Claude API keys and test one call each
 - [ ] Soma: sketch wireframes for the landing page and the results report
 
 ### Thu Nov 5 — Crawler and design
@@ -62,7 +62,7 @@ Build runs Nov 4–8 and Nov 10–11. Feature freeze is Nov 11 at 6 pm; after th
 
 ### Mon Nov 9 — AI and report start
 
-- [ ] Erick: start OpenRouter integration
+- [ ] Erick: start Claude API integration
 - [ ] Soma: start the results dashboard layout
 - [ ] Both: fix the bugs found in the Nov 8 run
 
