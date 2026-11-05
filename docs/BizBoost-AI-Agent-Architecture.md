@@ -114,7 +114,7 @@ Every finding counts: a check that runs on each page contributes once per page. 
 
 ## Open questions from the PRD
 
-- Backlinks stay in as an optional feature and are the first thing cut if time is short. Still open: which backlink data provider, if any, can we use without a paid account?
+- Resolved: no backlink provider for the MVP. Backlinks stay in as an optional feature and are the first thing cut if time is short, so inbound backlink items show “Data unavailable”. Collaborator’s free Backlink Checker (powered by SE Ranking) is only a manual reference: it is a web form limited to 5 checks a day (20 with an account) and no backlink API was found, so we do not automate it. Version 2 idea: a provider with a real API, such as the SE Ranking API (price and terms not yet checked).
 - Resolved: category weights are Technical 25, Keyword 25, Content 20, Local 20, Credibility and Backlinks 10 (see Scoring). They are a first guess to tune after the 10 test sites.
 - Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Budget: $40 of API credits, roughly 10 cents per audit (estimate). Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.
 - How should Local SEO be handled for businesses where local search is not relevant?

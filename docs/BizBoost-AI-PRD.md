@@ -185,7 +185,7 @@ Paid SEO suites such as Semrush, Ahrefs and Moz serve marketing professionals an
 
 **A7. Open questions**
 
-* Resolved: backlinks stay in the plan as an optional feature, and they are the first thing cut if time runs short (see A9). Still open: which backlink data provider, if any, can we use without a paid account? Until one is chosen, backlink items show “Data unavailable”.  
+* Resolved: no backlink provider for the MVP. Backlinks stay in as an optional feature and are the first thing cut if time is short, so inbound backlink items show “Data unavailable”. Collaborator’s free Backlink Checker (powered by SE Ranking) is only a manual reference: it is a web form limited to 5 checks a day (20 with an account) and no backlink API was found, so we do not automate it. Version 2 idea: a provider with a real API, such as the SE Ranking API (price and terms not yet checked).  
 * Resolved: the initial category weights are Technical SEO 25, Keyword Optimization 25, Content Quality 20, Local SEO 20, and Credibility and Backlinks 10 (see A10). They are a first guess and will be tuned after the 10 test sites.  
 * Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Budget: $40 of API credits, roughly 10 cents per audit (estimate). Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.  
 * How should Local SEO be handled for businesses where local search is not relevant?
@@ -236,7 +236,7 @@ Every check returns pass, warn, fail or unavailable. Each check has a weight (fo
 | :---- | :---- | :---- | :---- |
 | Claude API (Anthropic), model Claude Sonnet 5.5 | Plain-language explanations and the top 3 fixes | Key in hand, $40 of credits | About $2 per million input tokens and $10 per million output tokens (Anthropic’s published rates, October 2026). Our estimate is roughly 10 cents per audit, so about 400 audits. Rate limit: to confirm in the Anthropic Console. |
 | Google PageSpeed Insights API | Homepage speed and mobile results | Key in hand | Daily and per-minute quota: to confirm in the Google Cloud console. |
-| Backlink data provider (optional) | Inbound backlinks | No provider chosen yet | Not needed to ship. First thing cut if time is short. |
+| Backlink data provider (optional) | Inbound backlinks | None for the MVP | Not needed to ship, shows “Data unavailable”. First thing cut if time is short. Collaborator’s free checker is a manual reference only (5 checks a day, no backlink API found). |
 
 Keys live in a local `.env` file that is never committed to GitHub (the repository ignores it). The model is set with `ANTHROPIC_MODEL`, so we can compare it with Claude Opus 5.5 on the test sites without changing code.
 
