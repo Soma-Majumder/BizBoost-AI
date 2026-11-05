@@ -71,6 +71,32 @@ URL entry
 
 ---
 
+## How the score works
+
+- Every check returns **pass** (1 point), **warn** (half a point), **fail** (0), or **unavailable** (dropped, never counted as 0).
+- **Category score (0–100):** weight × points for the measured checks, divided by the total weight of those checks, times 100.
+- **Overall score (0–100):** the weighted average of the category scores. A category with no measured checks is left out and the other weights are rescaled to 100.
+
+| Category | Weight |
+| --- | --- |
+| Technical SEO | 25 |
+| Keyword Optimization | 25 |
+| Content Quality | 20 |
+| Local SEO | 20 |
+| Credibility and Backlinks | 10 |
+
+The weights are a first guess, to be tuned after the 10 test sites. Backlinks never fail a site, because the data source is incomplete.
+
+---
+
+## What data is stored
+
+Nothing is stored after the audit. The website address, scanned pages, findings and report exist in memory only while the audit runs and the results are on screen. There are no accounts, no database and no saved reports.
+
+Two outside services receive data to do their job: Google PageSpeed receives the homepage address, and the Claude API receives the findings and scores as text (the evidence, not the raw page HTML).
+
+---
+
 ## Assumptions
 
 | Assumption | Basis | Risk | If wrong |
@@ -93,13 +119,12 @@ URL entry
 
 ## Getting started
 
-> The project structure and file names below are the planned setup. Update them to match the repo as it's built.
-
 ### Requirements
 
 - Python 3.10+
 - A Google PageSpeed Insights API key
 - An Anthropic (Claude) API key
+- Optional: a Crawly API key for backlinks (without it, backlinks show "Data unavailable")
 
 ### Install
 
@@ -113,12 +138,13 @@ pip install -r requirements.txt
 
 ### Configure
 
-Create a `.env` file in the project root:
+Copy `.env.example` to `.env` in the project root and fill it in. Never commit `.env`.
 
 ```
 PAGESPEED_API_KEY=your_pagespeed_key
 ANTHROPIC_API_KEY=your_anthropic_key
 ANTHROPIC_MODEL=claude-sonnet-5-5
+BACKLINK_API_KEY=your_crawly_key   # optional
 ```
 
 ### Run
@@ -141,7 +167,7 @@ Open the local URL Streamlit prints, enter a website address, and click **Start 
 | Clear next steps | 100% of reports include at least 3 prioritized fixes |
 | Honest scoring | 0 "Data unavailable" items counted as zero |
 | Plain language | 4 of 5 test users can name their top fix without help |
-| All categories work | 5 of 5 categories return a score or "Data unavailable" by Day 6 |
+| All categories work | 5 of 5 categories return a score or "Data unavailable" by Nov 11, 2026 |
 | Trustworthy AI | 0 AI recommendations that cite something not in the evidence |
 
 ---
@@ -151,6 +177,19 @@ Open the local URL Streamlit prints, enter a website address, and click **Start 
 - **PageSpeed is slow or rate-limited:** we run it on the homepage only, with a 30-second timeout. If it fails, speed shows "Data unavailable" and the rest of the audit still finishes.
 - **Sites that block crawling:** we respect the block, stop the scan, and explain in plain language. Pages we can't reach are listed as not scanned, never scored as failures.
 - **AI explains something that isn't in the evidence:** the AI only receives the scanner's evidence, is told to explain only what's in it, and every recommendation must name the check it comes from. We review the output on all 10 test sites.
+- **Claude API rate limit is unknown:** the key comes from the school and no limit has been shared. The SDK retries rate-limit errors automatically, and if the AI is still unavailable the report falls back to rule-based text.
+
+### If time runs short
+
+**Never cut:** URL validation, the crawler, the Technical, Keyword and Content analyzers, the scoring engine, the report with evidence and a top 3 fixes list, and AI explanations with the rule-based fallback text.
+
+**Ship a simpler version:** Local SEO keeps only the phone number, address and map checks.
+
+**Cut first, in this order:**
+1. Inbound backlinks (the checks stay and show "Data unavailable")
+2. P2 items: the example report and copy or download of the report
+3. PageSpeed results (speed shows "Data unavailable", the rest still works)
+4. The extra Local SEO checks
 
 ---
 
@@ -159,27 +198,29 @@ Open the local URL Streamlit prints, enter a website address, and click **Start 
 - Google Analytics, Search Console, and user accounts
 - Crawling more than 10 pages per audit
 - Ongoing monitoring, alerts, rank tracking, and automated link building
-- Required inbound backlink analysis (optional only, since it needs a paid provider)
+- Required inbound backlink analysis (optional only: the free Crawly provider has a 100-requests-a-day limit and an incomplete index)
 
 ---
 
-## Six-day build plan
+## Build plan (Nov 4–12, 2026)
 
-| Day | Work | Deliverable |
+| Dates | Work | Deliverable |
 | --- | --- | --- |
-| 1 | Streamlit interface, URL validation, crawler | Website scanner |
-| 2 | Keyword and content analyzers | First two SEO checks |
-| 3 | Local, technical, and credibility analyzers | All five SEO checks |
-| 4 | PageSpeed, optional backlinks, scoring | Evidence-based results |
-| 5 | Claude AI reasoning, recommendations, dashboard | AI-powered audit |
-| 6 | Testing, bug fixes, presentation | Working demo |
+| Nov 4–5 | Streamlit interface, URL validation, crawler | Website scanner |
+| Nov 6–7 | Five SEO analyzers, PageSpeed, scoring engine | Evidence-based scores |
+| Nov 8 | Audit orchestrator: one site runs end to end | URL to scores |
+| Nov 9–10 | Claude AI explanations, top 3 fixes, results dashboard | AI-powered audit |
+| Nov 11 | Test on 10 sites, fix bugs, feature freeze | Demo-ready build |
+| Nov 12 | Demo | Working demo |
+
+Status on Nov 5: the URL validator, crawler and all five analyzers are built and tested. The full day-by-day plan is in `BizBoost AI — Project plan.md`.
 
 ---
 
 ## Open questions
 
 - Resolved: backlinks stay in as an optional feature and are the first thing cut if time runs short. Provider: the free Crawly API (getcrawly.com), tested on 5 Nov 2026 on veganbodhi.com, which returned 18 referring domains. Limit: 100 requests a day, one call per audit. Crawly uses an open web index that may be incomplete, so no data, a missing key or an error shows “Data unavailable”, never zero and never a failure. Collaborator’s free Backlink Checker (a web form, 5 checks a day, no backlink API found) is only a manual reference.
-- Resolved: category weights are Technical 25, Keyword 25, Content 20, Local 20, Credibility and Backlinks 10. A first guess to tune after the 10 test sites.
+- Resolved: category weights are Technical 25, Keyword 25, Content 20, Local 20, Credibility and Backlinks 10. A first guess to tune after the 10 test sites (see "How the score works").
 - Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Budget: $40 of API credits, roughly 10 cents per audit (estimate). Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.
 - How should Local SEO be handled for businesses where local search doesn't matter?
 
