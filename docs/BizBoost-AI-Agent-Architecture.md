@@ -135,5 +135,7 @@ Every finding counts: a check that runs on each page contributes once per page. 
 | `integrations/backlinks.py` | Crawly backlink connector (optional) |
 | `integrations/pagespeed.py` | PageSpeed connector (to build) |
 | `scoring/score_engine.py` | Scoring engine (to build) |
-| `agent/reasoning.py` | AI agent (to build) |
+| `agent/reasoning.py` | AI agent |
+| `agent/output_validator.py` | Output validator: checks the AI's answer against the evidence, retries once, then falls back |
+| `agent/fallback_text.py` | Rule-based text used when AI explanations are rejected or unavailable |
 | `tests/` | Tests for everything built so far |
