@@ -1,0 +1,3 @@
+# Show Soma Majumder as one person in git log, shortlog and blame.
+# Format: Proper Name <proper email> Name used in commit <email used in commit>
+Soma Majumder <61722880+Soma-Majumder@users.noreply.github.com> Soma <soma.creativeonline@gmail.com>
