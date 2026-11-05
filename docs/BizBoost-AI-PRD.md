@@ -155,7 +155,7 @@ BizBoost AI is one AI agent supported by five deterministic SEO analyzers, not f
 
 **A3. Technology**
 
-Streamlit, Python, BeautifulSoup, Google PageSpeed Insights API and OpenRouter.
+Streamlit, Python, BeautifulSoup, Google PageSpeed Insights API and the Claude API (Anthropic).
 
 **A4. System rules**
 
@@ -180,14 +180,14 @@ Paid SEO suites such as Semrush, Ahrefs and Moz serve marketing professionals an
 * Day 2: Keyword and content analyzers. Deliverable: first two SEO checks.  
 * Day 3: Local, technical and credibility analyzers. Deliverable: all five SEO checks.  
 * Day 4: PageSpeed, optional backlink integration and scoring. Deliverable: evidence-based results.  
-* Day 5: OpenRouter AI reasoning, recommendations and dashboard. Deliverable: AI-powered audit.  
+* Day 5: Claude AI reasoning, recommendations and dashboard. Deliverable: AI-powered audit.  
 * Day 6: Testing, bug fixes and presentation. Deliverable: working demo.
 
 **A7. Open questions**
 
 * Which backlink data provider, if any, can we use without a paid account? The integration stays optional.  
 * How should each category be weighted in the overall score?  
-* Which OpenRouter model gives the best balance of cost, speed and explanation quality?  
+* Which Claude model gives the best balance of cost, speed and explanation quality? Default: `claude-sonnet-5-5`, changeable with the `ANTHROPIC_MODEL` setting. Test a cheaper model on the 10 test sites before deciding.  
 * How should Local SEO be handled for businesses where local search is not relevant?
 
 **A8. Risks and how we handle them**

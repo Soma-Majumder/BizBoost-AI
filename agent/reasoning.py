@@ -1,1 +1,1 @@
-"""AI reasoning agent (OpenRouter). Single pass over findings JSON."""
+"""AI reasoning agent (Claude API). Single pass over findings JSON."""

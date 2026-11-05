@@ -86,7 +86,7 @@ URL entry
 - **Streamlit**: web interface and results dashboard
 - **BeautifulSoup**: page parsing for the crawler and analyzers
 - **Google PageSpeed Insights API**: homepage speed and mobile performance
-- **OpenRouter**: AI explanations and recommendations
+- **Claude API (Anthropic)**: AI explanations and recommendations
 
 ---
 
@@ -98,7 +98,7 @@ URL entry
 
 - Python 3.10+
 - A Google PageSpeed Insights API key
-- An OpenRouter API key
+- An Anthropic (Claude) API key
 
 ### Install
 
@@ -116,8 +116,8 @@ Create a `.env` file in the project root:
 
 ```
 PAGESPEED_API_KEY=your_pagespeed_key
-OPENROUTER_API_KEY=your_openrouter_key
-OPENROUTER_MODEL=your_chosen_model
+ANTHROPIC_API_KEY=your_anthropic_key
+ANTHROPIC_MODEL=claude-sonnet-5-5
 ```
 
 ### Run
@@ -170,7 +170,7 @@ Open the local URL Streamlit prints, enter a website address, and click **Start 
 | 2 | Keyword and content analyzers | First two SEO checks |
 | 3 | Local, technical, and credibility analyzers | All five SEO checks |
 | 4 | PageSpeed, optional backlinks, scoring | Evidence-based results |
-| 5 | OpenRouter AI reasoning, recommendations, dashboard | AI-powered audit |
+| 5 | Claude AI reasoning, recommendations, dashboard | AI-powered audit |
 | 6 | Testing, bug fixes, presentation | Working demo |
 
 ---
@@ -179,7 +179,7 @@ Open the local URL Streamlit prints, enter a website address, and click **Start 
 
 - Which backlink data provider, if any, can we use without a paid account?
 - How should each category be weighted in the overall score?
-- Which OpenRouter model gives the best balance of cost, speed, and explanation quality?
+- Which Claude model gives the best balance of cost, speed, and explanation quality? Default: `claude-sonnet-5-5`, changeable with the `ANTHROPIC_MODEL` setting. Test a cheaper model on the 10 test sites before deciding.
 - How should Local SEO be handled for businesses where local search doesn't matter?
 
 ---

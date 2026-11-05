@@ -21,7 +21,7 @@ User enters URL (Streamlit)
       |- Google PageSpeed API (homepage only, 30-second timeout; feeds Technical SEO)
       |- Backlink provider (optional; feeds Credibility)
   -> Evidence + scoring engine (unavailable checks dropped, weights rescaled to 100)
-  -> AI reasoning agent (OpenRouter)
+  -> AI reasoning agent (Claude API)
   -> Output validator
   -> Report generator
   -> Streamlit results dashboard
@@ -93,13 +93,13 @@ Every analyzer returns findings in the same shape, so the scoring engine and the
 | Crawler blocked by robots.txt or a firewall | Stop the scan, tell the user the site does not allow scanning and list pages as not scanned |
 | Content built by JavaScript | Affected checks show "Data unavailable", not a failure |
 | No backlink provider | Backlink items show "Data unavailable", and the audit continues |
-| OpenRouter fails | Show scores and findings with rule-based text, plus a note that AI explanations are unavailable |
+| Claude API fails | Show scores and findings with rule-based text, plus a note that AI explanations are unavailable |
 
 ## Open questions from the PRD
 
 - Which backlink data provider, if any, can we use without a paid account? The integration stays optional.
 - How should each category be weighted in the overall score?
-- Which OpenRouter model gives the best balance of cost, speed and explanation quality?
+- Which Claude model gives the best balance of cost, speed and explanation quality? Default: `claude-sonnet-5-5`, changeable with the `ANTHROPIC_MODEL` setting. Test a cheaper model on the 10 test sites before deciding.
 - How should Local SEO be handled for businesses where local search is not relevant?
 
 ## Mapping to the project structure
