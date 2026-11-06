@@ -43,6 +43,18 @@ def test_hard_to_read_text_is_flagged():
     assert "Reading ease" in item.evidence
 
 
+def test_menu_style_text_without_sentences_is_unavailable_not_scored():
+    menu = "Veggie Burger with fries and salad $12 Tofu Pad Thai with peanuts $14 " * 20
+    item = by_id(analyze(make_site(make_page(text=menu))), "content.readability")
+    assert item.status is Status.UNAVAILABLE
+    assert "mostly lists or short items" in item.evidence
+
+
+def test_normal_prose_is_still_scored():
+    prose = "We cook fresh food every day. Come and eat with us. Our menu is simple and tasty. " * 8
+    assert by_id(analyze(make_site(make_page(text=prose))), "content.readability").status is Status.PASS
+
+
 def test_short_text_skips_readability():
     assert not has(analyze(make_site(make_page(text="Short page."))), "content.readability")
     assert _reading_ease("Short page.") is None
