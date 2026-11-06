@@ -20,6 +20,11 @@ SHORT_WORDS = 250  # fewer than this is a warn
 READABILITY_MIN_WORDS = 100  # too little text to score reading ease
 EASY_ENOUGH = 50  # Flesch reading ease: 50+ is plain English for most adults
 VERY_HARD = 30
+# Menus, price lists and link lists have few full stops, so a whole page counts as one
+# huge "sentence" and the score goes far below zero. Such text is not measured.
+READABILITY_WEIGHT = 1  # real SEO effect is modest and menu-style sites rarely score well
+MIN_SENTENCES = 5
+MAX_AVG_SENTENCE_WORDS = 40
 ALT_FAIL_SHARE = 0.5  # fail when more than this share of images lack alt text
 SUBHEADING_MIN_WORDS = 300  # longer pages should be broken up with H2+ headings
 
@@ -83,29 +88,43 @@ def _reading_ease(text: str) -> float | None:
     return 206.835 - 1.015 * (len(words) / len(sentences)) - 84.6 * (syllables / len(words))
 
 
+def _is_prose(text: str) -> bool:
+    """True when the text is written in sentences, so reading ease means something."""
+    words = _WORD_RE.findall(text)
+    sentences = [s for s in _SENTENCE_RE.split(text) if _WORD_RE.search(s)]
+    return len(sentences) >= MIN_SENTENCES and len(words) / len(sentences) <= MAX_AVG_SENTENCE_WORDS
+
+
 def _readability(page: PageData) -> Finding | None:
     cid = "content.readability"
     if page.lang and not page.lang.lower().startswith("en"):
         return unavailable(
             cid, CATEGORY,
             f'Reading ease is only measured for English pages (this page is "{page.lang}").',
-            weight=2, page=page.url,
+            weight=READABILITY_WEIGHT, page=page.url,
         )
     score = _reading_ease(page.text)
     if score is None:
         return None  # word_count already reports pages with too little text
+    if not _is_prose(page.text):
+        return unavailable(
+            cid, CATEGORY,
+            "Reading ease could not be measured because this page is mostly lists or short "
+            "items (such as a menu) rather than full sentences.",
+            weight=READABILITY_WEIGHT, page=page.url,
+        )
     if score >= EASY_ENOUGH:
         return finding(
             cid, CATEGORY, Status.PASS,
             f"Reading ease score is {score:.0f} out of 100, which is easy to read.",
-            weight=2, page=page.url,
+            weight=READABILITY_WEIGHT, page=page.url,
         )
     status = Status.FAIL if score < VERY_HARD else Status.WARN
     return finding(
         cid, CATEGORY, status,
         f"Reading ease score is {score:.0f} out of 100 (50 or more is easy to read). "
         "Shorter sentences and simpler words would help.",
-        weight=2, page=page.url,
+        weight=READABILITY_WEIGHT, page=page.url,
     )
 
 
