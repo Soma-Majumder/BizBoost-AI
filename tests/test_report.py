@@ -259,7 +259,8 @@ def test_text_report_has_everything_a_reader_needs():
         f"Check: {META}",
         "What we found: AI meta text.",
         "Why it matters: W2.",
-        f"Evidence: {URL}: Description is missing.",
+        f"Evidence: [Problem] {URL}: Description is missing.",
+        f"Evidence: [Passed] {URL}x: Description is fine.",
         "[Data unavailable] Main content load time",
         "[Passed] Secure connection (HTTPS)",
         "PAGES SCANNED: 2",
@@ -284,3 +285,120 @@ def test_text_report_marks_nothing_measured_as_unavailable_not_zero():
     text = to_text(build_report(audit(()), Explanation({"findings": [], "top_priorities": []}, True)))
     assert "Overall score: Data unavailable" in text
     assert "0 / 100" not in text
+
+
+# --- What the redesigned results page needs ---------------------------------------------
+
+from datetime import date
+
+from report import (
+    GOOD,
+    NEEDS_ATTENTION,
+    NEEDS_WORK,
+    VERDICTS,
+    evidence_summary,
+    score_band,
+)
+
+
+@pytest.mark.parametrize(
+    ("score", "band"),
+    [
+        (100, GOOD), (75, GOOD), (74.6, GOOD),  # shown as 75, so it must say Good
+        (74.5, NEEDS_WORK),  # Python shows 74.5 as 74, and the label must match
+        (74.4, NEEDS_WORK), (60, NEEDS_WORK), (59.5, NEEDS_WORK),
+        (59.4, NEEDS_ATTENTION), (0, NEEDS_ATTENTION),
+        (None, "Data unavailable"),
+    ],
+)
+def test_score_band_matches_the_number_shown(score, band):
+    assert score_band(score) == band
+
+
+def test_verdict_follows_the_overall_band_and_makes_no_claims():
+    report = build_report(audit(), AI)
+    assert report.verdict == VERDICTS[report.band]
+    for sentence in VERDICTS.values():
+        assert "Google" not in sentence and "customers" not in sentence
+
+
+def test_nothing_measured_gets_its_own_verdict():
+    report = build_report(audit(()), Explanation({"findings": [], "top_priorities": []}, True))
+    assert report.band == "Data unavailable"
+    assert "couldn't measure" in report.verdict
+
+
+def test_each_evidence_line_says_whether_that_page_has_the_problem():
+    lines = check(build_report(audit(), AI), META).evidence_lines
+    assert [(line.label, line.text) for line in lines] == [
+        ("Problem", f"{URL}: Description is missing."),
+        ("Passed", f"{URL}x: Description is fine."),
+    ]
+
+
+def test_unavailable_evidence_line_is_labelled_not_checked():
+    line = check(build_report(audit(), AI), LCP).evidence_lines[0]
+    assert line.label == "Not checked"
+
+
+def test_top_fix_evidence_counts_the_pages_with_the_problem():
+    pages = [f"{URL}{p}" for p in ("", "menu", "about", "gallery")]
+    found = [
+        finding(META, Category.KEYWORD_OPTIMIZATION, "fail", "Missing.", page=pages[1]),
+        finding(META, Category.KEYWORD_OPTIMIZATION, "fail", "Missing.", page=pages[2]),
+        finding(META, Category.KEYWORD_OPTIMIZATION, "warn", "Too short.", page=pages[3]),
+        finding(META, Category.KEYWORD_OPTIMIZATION, "pass", "Fine.", page=pages[0]),
+        unavailable(META, Category.KEYWORD_OPTIMIZATION, "Built with JavaScript.", page=f"{URL}js"),
+    ]
+    assert evidence_summary(found) == "Found on 3 of 4 pages we could check: /menu, /about…"
+
+
+def test_top_fix_evidence_says_pages_when_every_page_was_checked():
+    found = [
+        finding(META, Category.KEYWORD_OPTIMIZATION, "fail", "Missing.", page=f"{URL}menu"),
+        finding(META, Category.KEYWORD_OPTIMIZATION, "pass", "Fine.", page=URL),
+    ]
+    assert evidence_summary(found) == "Found on 1 of 2 pages: /menu"
+
+
+def test_top_fix_evidence_without_pages_uses_the_scanner_text_shortened():
+    found = [finding("technical.sitemap", Category.TECHNICAL_SEO, "fail", "No XML sitemap was found.")]
+    assert evidence_summary(found) == "No XML sitemap was found."
+    long = [finding("a.b", Category.TECHNICAL_SEO, "fail", "word " * 40)]
+    summary = evidence_summary(long)
+    assert len(summary) <= 90 and summary.endswith("…")
+
+
+def test_top_fix_evidence_on_a_single_page_uses_the_scanner_text():
+    found = [finding(META, Category.KEYWORD_OPTIMIZATION, "fail", "Missing.", page=URL)]
+    assert evidence_summary(found) == "Missing."
+
+
+def test_top_fix_evidence_is_empty_when_nothing_failed():
+    assert evidence_summary([finding(HTTPS, Category.TECHNICAL_SEO, "pass", "Fine.")]) == ""
+
+
+def test_top_fixes_carry_their_evidence_summary():
+    fixes = build_report(audit(), AI).top_fixes
+    assert fixes[0].evidence == "Found on 1 of 2 pages: /"  # one page has it, one passed
+
+
+def test_speed_check_is_found_or_absent():
+    assert build_report(audit(), AI).speed is None
+    speed = unavailable("technical.speed_score", Category.TECHNICAL_SEO, "No PageSpeed key is set.",
+                        source=Source.PAGESPEED, weight=3)
+    report = build_report(audit((*FINDINGS, speed)), AI)
+    assert report.speed.status is Status.UNAVAILABLE
+    assert report.speed.evidence == ("No PageSpeed key is set.",)
+
+
+def test_report_records_the_scan_date():
+    assert build_report(audit(), AI).scanned_on == date.today()
+
+
+def test_text_report_includes_bands_verdict_and_top_fix_evidence():
+    text = to_text(build_report(audit(), AI))
+    report = build_report(audit(), AI)
+    assert f"Overall score: {score_text(report.overall)} ({report.band})" in text
+    assert report.verdict in text
+    assert "   Evidence: Found on 1 of 2 pages: /" in text

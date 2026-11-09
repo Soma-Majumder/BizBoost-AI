@@ -10,13 +10,39 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
+from datetime import date
 from typing import Any
+from urllib.parse import urlsplit
 
 from agent.output_validator import Explanation
 from findings import Finding, Status
 from orchestrator import AuditResult
 
 DATA_UNAVAILABLE = "Data unavailable"
+SPEED_CHECK_ID = "technical.speed_score"
+MAX_SUMMARY_PAGES = 2
+MAX_SUMMARY_CHARS = 90
+
+# Score ranges agreed for the design. The same words appear next to every color.
+GOOD_MIN = 75
+NEEDS_WORK_MIN = 60
+GOOD, NEEDS_WORK, NEEDS_ATTENTION = "Good", "Needs work", "Needs attention"
+
+# One sentence per score range. It describes the score only, never the business.
+VERDICTS = {
+    GOOD: "Your site is in good shape. A few fixes would make it even easier to find.",
+    NEEDS_WORK: "Your site has a solid base, with several fixes that would help.",
+    NEEDS_ATTENTION: "Your site needs work in a few key areas. Start with the fixes below.",
+    DATA_UNAVAILABLE: "We couldn't measure enough of your site to give an overall score.",
+}
+
+# How each evidence line is labelled, so readers can see which page has the problem.
+LINE_LABELS = {
+    Status.FAIL: "Problem",
+    Status.WARN: "Needs attention",
+    Status.PASS: "Passed",
+    Status.UNAVAILABLE: "Not checked",
+}
 
 CATEGORY_LABELS = {
     "technical_seo": "Technical SEO",
@@ -59,11 +85,21 @@ _CHECK_NAMES = {
 
 
 @dataclass(frozen=True)
+class EvidenceLine:
+    status: Status
+    text: str  # what was found, starting with the page when there is one
+
+    @property
+    def label(self) -> str:
+        return LINE_LABELS[self.status]
+
+
+@dataclass(frozen=True)
 class ReportCheck:
     check_id: str
     name: str
     status: Status
-    evidence: tuple[str, ...]  # what was found and where, one line per page
+    evidence_lines: tuple[EvidenceLine, ...]  # what was found and where, one line per page
     explanation: str = ""  # AI text. Rule-based reports show the evidence on its own.
     why_it_matters: str = ""
     action: str = ""
@@ -71,6 +107,10 @@ class ReportCheck:
     @property
     def status_label(self) -> str:
         return STATUS_LABELS[self.status]
+
+    @property
+    def evidence(self) -> tuple[str, ...]:
+        return tuple(line.text for line in self.evidence_lines)
 
 
 @dataclass(frozen=True)
@@ -92,6 +132,10 @@ class ReportCategory:
     def passed(self) -> tuple[ReportCheck, ...]:
         return tuple(c for c in self.checks if c.status is Status.PASS)
 
+    @property
+    def band(self) -> str:
+        return score_band(self.score)
+
 
 @dataclass(frozen=True)
 class TopFix:
@@ -100,6 +144,7 @@ class TopFix:
     title: str
     reason: str
     action: str
+    evidence: str = ""  # a short summary, such as "Found on 7 of 10 pages: /menu, /about…"
 
 
 @dataclass(frozen=True)
@@ -121,10 +166,37 @@ class Report:
     ai_generated: bool
     note: str | None  # shown when explanations are rule-based
     seconds: float | None = None
+    scanned_on: date | None = None
+
+    @property
+    def band(self) -> str:
+        return score_band(self.overall)
+
+    @property
+    def verdict(self) -> str:
+        return VERDICTS[self.band]
+
+    def check(self, check_id: str) -> ReportCheck | None:
+        return next((c for cat in self.categories for c in cat.checks if c.check_id == check_id), None)
+
+    @property
+    def speed(self) -> ReportCheck | None:
+        """The homepage speed check, which the results page shows on its own."""
+        return self.check(SPEED_CHECK_ID)
 
 
 def score_text(score: float | None) -> str:
     return DATA_UNAVAILABLE if score is None else f"{round(score)} / 100"
+
+
+def score_band(score: float | None) -> str:
+    """Good, Needs work, Needs attention, or Data unavailable. Uses the rounded score shown."""
+    if score is None:
+        return DATA_UNAVAILABLE
+    shown = round(score)
+    if shown >= GOOD_MIN:
+        return GOOD
+    return NEEDS_WORK if shown >= NEEDS_WORK_MIN else NEEDS_ATTENTION
 
 
 def build_report(
@@ -134,6 +206,9 @@ def build_report(
     output = explanation.output if explanation else {}
     ai_generated = bool(explanation and explanation.ai_generated)
     entries = {entry["check_id"]: entry for entry in output.get("findings", [])}
+    by_check: dict[str, list[Finding]] = defaultdict(list)
+    for item in audit.findings:
+        by_check[item.check_id].append(item)
 
     categories: list[ReportCategory] = []
     if audit.scores:
@@ -154,12 +229,15 @@ def build_report(
         message=audit.site.message,
         overall=audit.scores.overall if audit.scores else None,
         categories=tuple(categories),
-        top_fixes=tuple(_top_fix(item, entries) for item in output.get("top_priorities", [])),
+        top_fixes=tuple(
+            _top_fix(item, entries, by_check) for item in output.get("top_priorities", [])
+        ),
         pages_scanned=audit.site.scanned_urls,
         pages_not_scanned=tuple(NotScannedPage(p.url, p.reason) for p in audit.site.not_scanned),
         ai_generated=ai_generated,
         note=explanation.note if explanation else None,
         seconds=seconds,
+        scanned_on=date.today(),
     )
 
 
@@ -181,7 +259,7 @@ def _build_checks(
                 check_id=check_id,
                 name=check_name(check_id),
                 status=min((item.status for item in group), key=_STATUS_ORDER.__getitem__),
-                evidence=_evidence_lines(group),
+                evidence_lines=_evidence_lines(group),
                 # Rule-based explanations only repeat the evidence, which is always shown.
                 explanation=entry.get("explanation", "") if ai_generated else "",
                 why_it_matters=entry.get("why_it_matters", ""),
@@ -191,17 +269,19 @@ def _build_checks(
     return tuple(checks)
 
 
-def _evidence_lines(group: list[Finding]) -> tuple[str, ...]:
-    lines: list[str] = []
+def _evidence_lines(group: list[Finding]) -> tuple[EvidenceLine, ...]:
+    lines: list[EvidenceLine] = []
     for item in group:
         needs_page = item.page and item.page not in item.evidence
-        line = f"{item.page}: {item.evidence}" if needs_page else item.evidence
+        line = EvidenceLine(item.status, f"{item.page}: {item.evidence}" if needs_page else item.evidence)
         if line not in lines:
             lines.append(line)
     return tuple(lines)
 
 
-def _top_fix(priority: dict[str, Any], entries: dict[str, dict[str, Any]]) -> TopFix:
+def _top_fix(
+    priority: dict[str, Any], entries: dict[str, dict[str, Any]], by_check: dict[str, list[Finding]]
+) -> TopFix:
     check_id = priority["check_id"]
     return TopFix(
         check_id=check_id,
@@ -209,7 +289,35 @@ def _top_fix(priority: dict[str, Any], entries: dict[str, dict[str, Any]]) -> To
         title=priority.get("title", ""),
         reason=priority.get("reason", ""),
         action=entries.get(check_id, {}).get("action", ""),
+        evidence=evidence_summary(by_check.get(check_id, [])),
     )
+
+
+def evidence_summary(group: list[Finding]) -> str:
+    """One short line of evidence for a top fix, built only from what the scanner found."""
+    problems = [item for item in group if item.status in (Status.FAIL, Status.WARN)]
+    if not problems:
+        return ""
+    checked_pages = _unique(item.page for item in group if item.page and item.status is not Status.UNAVAILABLE)
+    problem_pages = _unique(item.page for item in problems if item.page)
+    if problem_pages and len(checked_pages) > 1:
+        paths = ", ".join(_path(page) for page in problem_pages[:MAX_SUMMARY_PAGES])
+        more = "…" if len(problem_pages) > MAX_SUMMARY_PAGES else ""
+        # Say so when some pages could not be checked, or "1 of 2" looks wrong next to
+        # "5 pages scanned".
+        some_unchecked = any(item.page and item.status is Status.UNAVAILABLE for item in group)
+        pages = "pages we could check" if some_unchecked else "pages"
+        return f"Found on {len(problem_pages)} of {len(checked_pages)} {pages}: {paths}{more}"
+    text = " ".join(problems[0].evidence.split())
+    return text if len(text) <= MAX_SUMMARY_CHARS else text[: MAX_SUMMARY_CHARS - 1].rstrip() + "…"
+
+
+def _unique(items) -> list[str]:
+    return list(dict.fromkeys(items))
+
+
+def _path(url: str) -> str:
+    return urlsplit(url).path or "/"
 
 
 def check_name(check_id: str) -> str:
@@ -224,8 +332,8 @@ def to_text(report: Report) -> str:
     if not report.completed:
         lines += [report.message or "The audit could not be completed.", ""]
     else:
-        lines += [f"Overall score: {score_text(report.overall)}"]
-        lines += [f"{c.label}: {score_text(c.score)}" for c in report.categories]
+        lines += [f"Overall score: {_score_and_band(report.overall)}", report.verdict]
+        lines += [f"{c.label}: {_score_and_band(c.score)}" for c in report.categories]
         lines.append("")
         if report.note:
             lines += [report.note, ""]
@@ -245,9 +353,15 @@ def _top_fix_lines(report: Report) -> list[str]:
         lines.append(f"   Why: {fix.reason}")
         if fix.action:
             lines.append(f"   What to do: {fix.action}")
+        if fix.evidence:
+            lines.append(f"   Evidence: {fix.evidence}")
         lines.append(f"   Check: {fix.check_id}")
     lines.append("")
     return lines
+
+
+def _score_and_band(score: float | None) -> str:
+    return score_text(score) if score is None else f"{score_text(score)} ({score_band(score)})"
 
 
 def _category_lines(category: ReportCategory) -> list[str]:
@@ -260,7 +374,7 @@ def _category_lines(category: ReportCategory) -> list[str]:
             lines.append(f"   Why it matters: {check.why_it_matters}")
         if check.action:
             lines.append(f"   What to do: {check.action}")
-        lines += [f"   Evidence: {line}" for line in check.evidence]
+        lines += [f"   Evidence: [{line.label}] {line.text}" for line in check.evidence_lines]
     lines.append("")
     return lines
 

@@ -224,18 +224,12 @@ def _cited_id(
 def _check_claims(text: str, check_id: str, group: list[Finding]) -> list[str]:
     """Numbers and claims must come from this check's evidence, or count its own findings.
 
-    Counts of the check's own findings are allowed: how many there are, how many failed or
-    warned, and how many different pages they cover (a page can appear twice).
+    Counts of the check's own findings are allowed (see ``_own_counts``), because they are
+    true by definition: "2 pages are hard to read" is a fact the scan established.
     """
     relevant = [item for item in group if item.status is not Status.PASS]
     evidence = " ".join(item.evidence for item in relevant)
-    own_counts = {
-        len(relevant),
-        sum(1 for item in relevant if item.status is Status.FAIL),
-        sum(1 for item in relevant if item.status is Status.WARN),
-        len({item.page for item in relevant if item.page}),
-    }
-    allowed = _numbers(evidence) | {Decimal(count) for count in own_counts}
+    allowed = _numbers(evidence) | {Decimal(count) for count in _own_counts(group)}
     evidence_lower = evidence.lower()
 
     problems = [
@@ -246,6 +240,30 @@ def _check_claims(text: str, check_id: str, group: list[Finding]) -> list[str]:
         if claim not in evidence_lower:
             problems.append(f'{check_id}: "{claim}" is not in this check\'s evidence. Remove it.')
     return problems
+
+
+def _own_counts(group: list[Finding]) -> set[int]:
+    """Every true way of counting a check's findings, as entries and as different pages.
+
+    A check can mix statuses across pages, for example 2 pages with a problem and 8 that
+    could not be measured. The AI may count any of these groups, and nothing else.
+    """
+    problem = (Status.FAIL, Status.WARN)
+    groups = (
+        group,                                                             # every page checked
+        [item for item in group if item.status is not Status.PASS],        # not passed
+        [item for item in group if item.status in problem],                # with a problem
+        [item for item in group if item.status is Status.FAIL],            # failed
+        [item for item in group if item.status is Status.WARN],            # needs attention
+        [item for item in group if item.status is Status.UNAVAILABLE],     # could not be checked
+        [item for item in group if item.status is Status.PASS],            # passed
+        [item for item in group if item.status is not Status.UNAVAILABLE], # actually measured
+    )
+    counts: set[int] = set()
+    for items in groups:
+        counts.add(len(items))
+        counts.add(len({item.page for item in items if item.page}))  # a page can appear twice
+    return counts
 
 
 def _numbers(text: str) -> set[Decimal]:
