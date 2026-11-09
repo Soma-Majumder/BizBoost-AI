@@ -106,7 +106,7 @@ def show_top_fixes(report: Report) -> None:
         st.markdown(f"**{number}. {_md(fix.title)}**")
         st.markdown(_md(fix.reason))
         if fix.action:
-            st.markdown(f"✅ **What to do:** {_md(fix.action)}")
+            st.markdown(f"**What to do:** {_md(_with_emoji(fix.action, '✅'))}")
         st.caption(f"From the check: {_md(fix.name)} ({_md(fix.check_id)})")
 
 
