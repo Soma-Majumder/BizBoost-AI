@@ -360,6 +360,50 @@ def test_counts_of_the_checks_own_findings_are_allowed():
     assert "5 is not" in "\n".join(validate_output(count_output("5 pages are affected."), findings))
 
 
+def mixed_readability_findings():
+    """Like spicymoonnyc.com, plus pages that passed, so every way of counting differs:
+    15 pages in all, 11 not passed, 3 with a problem (2 failed, 1 warned), 8 that could
+    not be measured, 4 passed and 7 actually measured. Every count differs, so each one
+    is tested on its own."""
+    unmeasurable = "Reading ease could not be measured because this page is mostly lists."
+    return [
+        finding("a.b", Category.CONTENT_QUALITY, "fail", "Reading ease score is 17 out of 100.", page="https://e.com/beer"),
+        finding("a.b", Category.CONTENT_QUALITY, "fail", "Reading ease score is 21 out of 100.", page="https://e.com/wine"),
+        finding("a.b", Category.CONTENT_QUALITY, "warn", "Reading ease score is 32 out of 100.", page="https://e.com/events"),
+        *[unavailable("a.b", Category.CONTENT_QUALITY, unmeasurable, page=f"https://e.com/menu{n}") for n in range(8)],
+        *[finding("a.b", Category.CONTENT_QUALITY, "pass", "Easy to read.", page=f"https://e.com/ok{n}") for n in range(4)],
+    ]
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "3 pages are hard to read.",                              # with a problem (failed + warned)
+        "8 pages could not be measured because they are menus.",  # could not be checked
+        "3 of the 15 pages are hard to read.",                    # with a problem, of all pages
+        "2 pages are very hard to read and 1 needs attention.",   # failed, warned
+        "We measured 7 pages.",                                   # actually measured
+        "4 pages are already easy to read.",                      # passed
+        "11 pages were not easy to read or could not be checked.",  # not passed
+    ],
+)
+def test_true_counts_on_a_check_with_mixed_statuses_are_allowed(text):
+    assert validate_output(count_output(text), mixed_readability_findings()) == []
+
+
+@pytest.mark.parametrize("wrong", ["5 pages are hard to read.", "9 pages could not be measured.", "12 pages."])
+def test_wrong_counts_on_a_check_with_mixed_statuses_are_still_rejected(wrong):
+    problems = validate_output(count_output(wrong), mixed_readability_findings())
+    assert any("is not in this check's evidence" in problem for problem in problems), wrong
+
+
+def test_counting_the_pages_that_passed_is_allowed():
+    findings = pages_findings(("fail", "https://e.com/a"), ("pass", "https://e.com/b"),
+                              ("pass", "https://e.com/c"), ("pass", "https://e.com/d"))
+    for text in ("3 pages already have one.", "1 of 4 pages is missing it."):
+        assert validate_output(count_output(text), findings) == [], text
+
+
 @pytest.mark.parametrize("invented", ["Aim for 70 to 160 characters.", "Write at least 100 words."])
 def test_invented_guideline_numbers_are_still_rejected(invented):
     findings = pages_findings(("fail", "https://e.com/a"), ("fail", "https://e.com/b"))
