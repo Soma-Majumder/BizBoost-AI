@@ -106,7 +106,7 @@ def show_top_fixes(report: Report) -> None:
         st.markdown(f"**{number}. {_md(fix.title)}**")
         st.markdown(_md(fix.reason))
         if fix.action:
-            st.markdown(f"**What to do:** {_md(fix.action)}")
+            st.markdown(f"✅ **What to do:** {_md(fix.action)}")
         st.caption(f"From the check: {_md(fix.name)} ({_md(fix.check_id)})")
 
 
@@ -125,16 +125,22 @@ def show_category(category: ReportCategory) -> None:
                 show_check(check)
 
 
+def _with_emoji(text: str, default: str) -> str:
+    """The AI starts its lines with an emoji. Rule-based text does not, so give it the default."""
+    return text if text[:1] and not text[0].isascii() else f"{default} {text}"
+
+
 def show_check(check: ReportCheck) -> None:
     icon = STATUS_ICONS[check.status_label]
     st.markdown(f"{icon} **{_md(check.name)}**: {check.status_label}")
     if check.explanation:
-        st.markdown(_md(check.explanation))
+        st.markdown(f"- {_md(_with_emoji(check.explanation, '🔍'))}")
     if check.why_it_matters:
-        st.markdown(f"**Why it matters:** {_md(check.why_it_matters)}")
-    if check.action:
-        st.markdown(f"**What to do:** {_md(check.action)}")
+        st.markdown(f"- {_md(_with_emoji(check.why_it_matters, '💡'))}")
     st.markdown("\n".join(f"- {_md(line)}" for line in check.evidence))
+    if check.action:
+        st.markdown(f"**🛠️ Solution for {_md(check.name)}**")
+        st.markdown(f"- {_md(_with_emoji(check.action, '✅'))}")
     st.caption(f"Check: {_md(check.check_id)}")
 
 
