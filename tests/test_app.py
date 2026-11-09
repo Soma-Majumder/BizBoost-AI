@@ -166,7 +166,7 @@ def test_top_fixes_show_the_reason_action_and_check():
     app = App().submit()
     assert "1. Add a title" in app.text
     assert "It is the first thing people see." in app.text
-    assert "✅ **What to do:** Write a title." in app.text
+    assert "**What to do:** ✅ Write a title." in app.text
     assert f"From the check: Title ({TITLE})" in app.text
 
 
@@ -320,3 +320,10 @@ def test_new_lines_in_website_text_cannot_start_new_markdown_blocks():
     raw = " ".join(item.value for item in app.at.markdown)
     assert "\n# " not in raw
     assert "ok \\# Big heading \\- item" in raw
+
+
+def test_emoji_is_added_only_when_the_text_has_none():
+    from app import _with_emoji
+
+    assert _with_emoji("Write a title.", "✅") == "✅ Write a title."
+    assert _with_emoji("🛠️ Ask your web person.", "✅") == "🛠️ Ask your web person."
