@@ -1,248 +1,344 @@
-# BizBoost AI
+<div align="center">
 
-**A free SEO audit for any business. Enter a website address and get scores, evidence, and a short list of what to fix first, in plain English.**
+# 🚀📈 BizBoost AI
 
----
+### *A free website check-up that shows any business how to get found on Google, in plain English.*
 
-## The problem we noticed
+**Type in your website address. In under 2 minutes, get your scores, the proof behind them, and the 3 things to fix first.** ⏱️
 
-A lot of vegan restaurants in New York are not SEO optimized. Their websites are missing the basics Google reads, so when someone nearby searches for a place to eat, the larger NYC community cannot find them. The owners usually don't know, and most can't afford a specialist or an agency to tell them.
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white)
+![Claude](https://img.shields.io/badge/Claude_API-Plain_English_AI-D97757)
+![Free](https://img.shields.io/badge/Cost-Free_to_use-2EA44F)
 
-## What we decided to do
+![The new BizBoost AI design: landing page, audit progress and report](docs/images/new-front-end-design.webp)
 
-We wanted to put more eyeballs on these restaurants, so we built **BizBoost AI**: a free audit that checks a website the way an SEO specialist would and explains the results in plain English. It needs no account, no SEO knowledge, and no paid tools.
+<sub>🎨 Design preview of the new front end. Scores shown are sample data.</sub>
 
-We started with vegan restaurants. The checks work for any small business with a website, so **the app is now open to ALL businesses**.
-
-We found the problem first, then matched it to a real job: the **B&H Senior SEO Specialist**. That role covers recurring technical and on-page audits, monitoring crawlability, speed, sitemaps, canonical tags, metadata and redirects, keyword research, and data-driven prioritization. Big companies pay a full-time person for this. BizBoost AI turns those recurring tasks into an automated audit a small business can run on its own.
-
----
-
-## Problems we hit, and what we decided
-
-| Problem | What we decided |
-| --- | --- |
-| An AI can say things that aren't true. | The rules decide what is wrong, and the AI only explains it. The AI never decides on its own that a problem exists. |
-| An AI explanation might mention something the scan never found. | Every AI explanation is checked against the real list of problems. If it fails, Claude gets one more try. |
-| The AI service might be down, or the retry might still fail. | The report falls back to ready-made plain-English text and says the text wasn't written by the AI. |
-| Some pages are built by JavaScript, so a plain scan can't read them. | Those checks show "Data unavailable" and are left out of the score. They are never counted as a failure. |
-| Owners don't understand SEO terms. | Every finding is a problem, why it matters, and one solution, written without jargon. |
-| Owners who've been burned by agencies don't trust a score. | Every finding shows its evidence: what was found, and on which page. |
-| Speed tests and backlink data can be slow or incomplete. | PageSpeed runs on the homepage only with a 30-second timeout. Backlinks are optional and never fail a site. |
-| A deep audit of a whole site would be slow. | We scan up to 10 pages, homepage first. |
+</div>
 
 ---
 
-## Who it's for
+## 📚 Table of contents
 
-- **Small-business owners** (shops, restaurants, local services) who have a website, know little about SEO, and want more customers to find them online.
-- **Freelance marketers and web designers** who want a quick, evidence-based audit to share with a client.
-
-## User stories
-
-1. **The new café owner:** As a café owner who just launched a website, I want to enter my URL and see an overall SEO score, so that I know whether people can even find my site on Google.
-2. **The busy plumber:** As a plumber with no time to learn SEO, I want to see just the top 3 things to fix first, so that I can spend my one free hour where it matters most.
-3. **The skeptical boutique owner:** As a boutique owner who's been burned by agencies, I want to see the evidence behind every finding, like which page has the problem, so that I can trust the results are real and not a sales pitch.
-4. **The restaurant owner losing nearby customers:** As a restaurant owner, I want to know whether my address, phone number and hours are easy for Google to find, so that people searching nearby can find me instead of my competitor.
-5. **The owner who hands it off:** As a salon owner who pays a web designer, I want a clear report I can download and send to her, so that she knows exactly what to fix without me having to explain SEO.
-
----
-
-## What it automates
-
-Normally, someone has to click through your website page by page, look for problems, work out what matters, and write it up. BizBoost AI does all of that automatically:
-
-1. **It visits your website.** It reads up to 10 pages the way Google would, and it respects the site's rules about what robots may read.
-2. **It checks five areas:**
-   - Keywords: do your pages use the words customers actually search for?
-   - Content quality: is your writing useful and complete?
-   - Local presence: can Google easily find your address, phone number and hours? This matters for "near me" searches.
-   - Technical health: are there broken pieces? Is the site fast?
-   - Credibility: do other websites link to you and vouch for you?
-3. **It gives you scores.** One overall score out of 100 and a score for each area.
-4. **It shows proof.** Every problem says what was found and on which page, so it doesn't read like a sales pitch.
-5. **It explains the problems in plain English.** An AI assistant turns the technical findings into simple language.
-6. **It picks your top 3 fixes,** in priority order, so you know where to spend your first hour.
-7. **It says so when it can't check something.** It shows "Data unavailable" instead of guessing or giving a false failing grade.
-
-### How it can help a business
-
-- **Saves money.** An expert-style audit without an agency or a full-time specialist.
-- **Saves time.** Results in minutes. A manual audit takes hours.
-- **Brings in more customers.** If Google can't read your site well, nearby customers find your competitor instead.
-- **Tells you what to do first.** The top 3 list puts the fixes that matter most first.
-- **Builds trust.** You can see the evidence behind every finding.
-- **Makes handing off easy.** Send the report to your web designer and they'll know exactly what to fix.
-- **Helps freelancers.** A quick, evidence-based audit to share with a client.
-
-One limit: it only looks at public information and up to 10 pages. It's a good starting check-up, not a full replacement for a long-term SEO strategy.
+- [😩 The problem](#-the-problem)
+- [🔍 How we came upon BizBoost AI](#-how-we-came-upon-bizboost-ai)
+- [💡 Our idea](#-our-idea)
+- [🎯 Who is this for?](#-who-is-this-for)
+- [✨ What BizBoost AI does](#-what-bizboost-ai-does)
+- [🧠 How it works](#-how-it-works)
+- [🤖 How the AI helps (and how we keep it honest)](#-how-the-ai-helps-and-how-we-keep-it-honest)
+- [📊 How the score works](#-how-the-score-works)
+- [🧩 Problems we hit, and what we decided](#-problems-we-hit-and-what-we-decided)
+- [🧪 Did it work?](#-did-it-work)
+- [✅ What works today (and what doesn't yet)](#-what-works-today-and-what-doesnt-yet)
+- [🙌 Who did what](#-who-did-what)
+- [🚀 Try it yourself](#-try-it-yourself)
+- [🛠️ For developers](#️-for-developers)
 
 ---
 
-## How it works
+## 😩 The problem
 
-```
-URL entry
-  → URL validation and safety check
-  → Audit orchestrator
-  → Website crawler (up to 10 pages)          PageSpeed Insights (homepage, in parallel)
-  → Five SEO analyzers                         Optional backlink data
-  → Evidence and scoring engine
-  → AI reasoning (explains findings, recommends fixes)
-  → Recommendations and report
-  → Streamlit results dashboard
+Picture a small vegan restaurant in New York. The food is great and the owner is proud of the website. 🌱
+
+- 🔎 But when someone nearby searches Google for **"vegan food near me"**, the restaurant **doesn't show up**.
+- 🧩 Behind the scenes, the website is **missing the basics Google looks for**, like page titles, short summaries and photo descriptions.
+- 🤷 The owner **has no idea**, because nobody ever told them.
+- 💸 Finding out normally means paying an agency or a full-time **SEO specialist**.
+
+> 💬 **SEO** just means making your website easy for Google to find and understand.
+
+The result: hungry people in the larger NYC community **can't find these restaurants**, and the restaurants lose customers they never knew they had. 😢
+
+---
+
+## 🔍 How we came upon BizBoost AI
+
+Most projects start with a job description. **Ours started with something we noticed.** 👀
+
+1. 🥗 **We noticed a pattern.** A lot of vegan restaurants in New York were not SEO optimized, and the wider community couldn't find them.
+2. 🤔 **We asked how we could help.** Could we put **more eyeballs** on these restaurants?
+3. 📋 **Then we found the job behind the problem.** Our teacher asked us to start from a real job description. Ours was the **Senior SEO Specialist** role at B&H, the person big companies pay full-time to check websites, work out what's wrong, and decide what to fix first.
+4. 💡 **We turned that job into a tool.** What if a small business could get the same kind of check-up in minutes, for free?
+5. 🌍 **We opened it up to everyone.** We started with vegan restaurants, but the checks work for **any business with a website**. So BizBoost AI is now open to **ALL businesses**. 🎉
+
+```mermaid
+flowchart LR
+  A[🥗 Noticed: vegan restaurants are hard to find online] --> B[🤔 Asked: how can we help them get seen?]
+  B --> C[📋 Matched it to a real job: Senior SEO Specialist]
+  C --> D[🛠️ Built BizBoost AI]
+  D --> E[🌍 Opened it to ALL businesses]
 ```
 
-**One AI agent, five rule-based analyzers.** The analyzers decide whether something exists, for example whether a page has a meta description. The AI only explains those findings and suggests an action.
+---
 
-### How the AI is used
+## 💡 Our idea
 
-BizBoost AI checks your website with ordinary rules first, like a checklist. The app then sends that list of problems to Claude once. Claude explains each problem and picks your top 3 fixes. This is where the Claude API helps most: it turns technical findings into plain language, so business owners can understand them without knowing any jargon.
+**BizBoost AI is the SEO specialist that small businesses can't afford.** 🦸
 
-**The loop.** It works like a teacher marking homework, with one chance to redo it:
+It reads your website the way Google does, finds what's holding you back, and explains it simply:
 
-1. Claude writes the explanations.
-2. The app checks them against the real list of problems.
-3. If they're good, they go in your report.
-4. If not, Claude gets one more try.
-5. If it still fails, or the AI service is down, ready-made plain-English text is used instead. The report notes that this text wasn't written by the AI.
+> 🌐 **Enter your website** → 🔍 **We check 5 areas** → 📊 **You get scores and proof** → ✅ **You get your top 3 fixes**
 
-**Why it matters:** the report only contains real problems, every explanation is written for a business owner, and the app still works if the AI is unavailable.
+No account. No SEO knowledge. No paid tools. ✨
 
 ---
 
-## Rules the system follows
+## 🎯 Who is this for?
 
-| Rule | What it means |
+| 🙋 Who | 💖 How BizBoost AI helps |
 | --- | --- |
-| Public data only | No Google Analytics, no Search Console, no user accounts. |
-| Crawler safety | Never scans private IP addresses, localhost, or unsafe redirects. |
-| Respect site rules | Checks `robots.txt`, uses reasonable crawl limits, and identifies its crawler. |
-| Evidence first | Every finding links to a measurable check or a named data source. |
-| No invented data | Missing backlink data stays "unavailable", never zero. |
-| Honest scoring | Unavailable checks are dropped from the score, and the remaining weights are rescaled to add up to 100. |
-| Small crawl | Up to 10 pages per audit. |
-| Page selection | Homepage first, then pages in the XML sitemap, then internal links from the homepage, until 10 pages. Duplicates and off-site links are skipped. |
-| Speed check scope | PageSpeed Insights runs on the homepage only, alongside the crawl, with a 30-second timeout. |
-| JavaScript-heavy sites | The crawler reads the HTML the server sends. If a check can't see content that is built by JavaScript, it shows "Data unavailable", not a failure. |
+| **Small-business owners** (cafés, restaurants, shops, salons) | Shows whether people can find them on Google, and what to fix first |
+| **Busy owners with no time to learn SEO** | Picks the top 3 fixes so they know where to spend their first free hour |
+| **Owners who've been burned by agencies** | Shows the proof behind every finding, so it never feels like a sales pitch |
+| **Owners who pay a web designer** | Gives a clear report to send, so the designer knows exactly what to fix |
+| **Freelance marketers and designers** | A quick, evidence-based check-up to share with a client |
 
 ---
 
-## How the score works
+## ✨ What BizBoost AI does
 
-- Every check returns **pass** (1 point), **warn** (half a point), **fail** (0), or **unavailable** (dropped, never counted as 0).
-- **Category score (0–100):** weight × points for the measured checks, divided by the total weight of those checks, times 100.
-- **Overall score (0–100):** the weighted average of the category scores. A category with no measured checks is left out and the other weights are rescaled to 100.
+Normally, someone has to click through your website page by page, look for problems, work out what matters, and write it all up. **BizBoost AI does that automatically:**
 
-| Category | Weight |
-| --- | --- |
-| Technical SEO | 25 |
-| Keyword Optimization | 25 |
-| Content Quality | 20 |
-| Local SEO | 20 |
-| Credibility and Backlinks | 10 |
+1. 🌐 **Visits your website.** It reads up to 10 pages, the way Google does, and respects each site's rules about what robots may read.
+2. 🔍 **Checks five areas:**
+   - 🔑 **Keywords:** do your pages use the words customers actually search for?
+   - 📝 **Content quality:** is your writing useful and complete?
+   - 📍 **Local presence:** can Google easily find your address, phone number and hours? This matters for "near me" searches.
+   - ⚙️ **Technical health:** are there broken pieces? Is the site fast?
+   - 🏅 **Credibility:** do other websites link to you and vouch for you?
+3. 📊 **Gives you scores.** One overall score out of 100, plus a score for each area.
+4. 🧾 **Shows proof.** Every problem says what was found and on which page.
+5. 🗣️ **Explains in plain English.** An AI assistant turns the technical findings into simple words.
+6. 🥇 **Picks your top 3 fixes,** in order, so you know where to start.
+7. 🙈 **Says so when it can't check something.** It shows **"Data unavailable"** instead of guessing or giving you a false failing grade.
 
-The weights are a first guess, to be tuned after the 10 test sites. Backlinks never fail a site, because the data source is incomplete.
+### 😊 What every finding looks like
 
----
+Each problem in your report comes in three simple parts:
 
-## What data is stored
-
-Nothing is stored after the audit. The website address, scanned pages, findings and report exist in memory only while the audit runs and the results are on screen. There are no accounts, no database and no saved reports.
-
-Two outside services receive data to do their job: Google PageSpeed receives the homepage address, and the Claude API receives the findings and scores as text (the evidence, not the raw page HTML).
-
----
-
-## Assumptions
-
-| Assumption | Basis | Risk | If wrong |
-| --- | --- | --- | --- |
-| The homepage gets the most traffic and matters most for SEO, so we test it first (crawl order and PageSpeed check). | Common for small-business sites; not verified with real analytics. | Medium: some businesses get most visits on Menu, Shop, or Location pages via Google. | Let users choose which page to check first, or prioritize pages using their analytics data. |
-| Impact and Effort ratings (used to pick the top 3 fixes) reflect what helps small-business rankings and what owners can fix themselves. | General SEO best practice; team judgment, not measured. | High: it decides the top 3 fixes, the core of the product. | Test with real owners (did they fix it, did it help?) and adjust the ratings. |
-
----
-
-## Did it work? Testing on 10 real sites
-
-We ran the audit on 10 public restaurant websites and reviewed the AI's explanations by hand against the scanner's evidence. The full review is in [`review/ai-review-10-sites.md`](review/ai-review-10-sites.md) (and a PDF).
-
-| Result | Target | What we found |
+| 🔍 What we found | 💡 Why it matters | ✅ What to do |
 | --- | --- | --- |
-| Audits complete | At least 9 of 10 | 10 of 10 |
-| Fast results | Under 2 minutes | Every test run finished under 2 minutes (longest about 70 seconds) |
-| Evidence-backed findings | 100% | 100% |
-| Trustworthy AI | 0 claims not in the evidence | 0 found in our review |
+| 12 of 14 photos on the homepage have no description | Search engines can't tell what the photos show | Add a short description to each photo, such as the name of the dish |
 
-Overall scores ranged from 69 to 91 (average about 82).
+*(A real example from one of our 10 test sites.)*
+
+### 💰 How it helps a business
+
+- 💵 **Saves money.** An expert-style check-up without an agency or a full-time specialist.
+- ⏳ **Saves time.** Results in minutes. A manual audit takes hours.
+- 🍽️ **Brings in more customers.** If Google can't read your site, nearby customers find your competitor instead.
+- 🥇 **Tells you what to do first.** The top 3 list puts the fixes that matter most first.
+- 🤝 **Builds trust.** You can see the evidence behind every finding.
+- 📤 **Easy to hand off.** Send the report to your web designer. No SEO talk needed.
+
+> 🙋 **One honest limit:** it only looks at public information and up to 10 pages. It's a great starting check-up, not a replacement for a long-term SEO plan.
+
+---
+
+## 🧠 How it works
+
+BizBoost AI is **five checklists and one AI helper**. 🧰
+
+```mermaid
+flowchart TD
+  U[🌐 You enter your website address] --> V[🛡️ We check the address is safe to scan]
+  V --> C[🕷️ We read up to 10 pages]
+  V --> P[⚡ Google tests how fast the homepage loads]
+  C --> A[📋 Five checklists decide what is wrong]
+  P --> A
+  A --> S[📊 We work out your scores]
+  S --> AI[🤖 The AI explains each problem and picks your top 3 fixes]
+  AI --> R[📄 Your report, with proof for every finding]
+```
+
+**The key idea:** 🔑 the **checklists decide what is wrong**. The **AI only explains it.** The AI is never allowed to decide on its own that a problem exists.
+
+---
+
+## 🤖 How the AI helps (and how we keep it honest)
+
+Technical findings sound like this: *"Meta description tag is missing."* 😵 Most owners don't know what that means.
+
+That's where the **Claude API** comes in. It turns those findings into plain language a business owner can understand, without any jargon. We send Claude the list of real problems **once**, and it explains each one and picks the top 3 fixes.
+
+### 🔁 The "teacher marking homework" loop
+
+```mermaid
+flowchart TD
+  W[✍️ Claude writes the explanations] --> K[🕵️ The app checks them against the real list of problems]
+  K -->|✅ Good| OK[📄 They go into your report]
+  K -->|🔧 Not good| RE[🔁 Claude gets one more try]
+  RE --> K2[🕵️ The app checks again]
+  K2 -->|✅ Good| OK
+  K2 -->|❌ Still not good| FB[🧰 Ready-made plain-English text is used instead]
+  FB --> N[📝 The report says this text wasn't written by the AI]
+```
+
+### 🛡️ Safety rules we built in
+
+- 🚫 **The AI can't invent problems.** It only sees the scanner's list of findings, never the raw website.
+- 🔢 **No made-up numbers.** If a number isn't in the evidence, the explanation is rejected.
+- 🔁 **Only one retry,** and then the backup text takes over.
+- 🧰 **The app still works if the AI is down.** You always get your scores and findings.
+- 🙈 **Can't check it? We say so.** "Data unavailable" is never counted against you.
+- 🔒 **Nothing is saved.** Your address and results disappear when you close the page.
+
+---
+
+## 📊 How the score works
+
+- ✅ A check that **passes** earns a full point, ⚠️ one that **needs attention** earns half, and ❌ one that **fails** earns none.
+- 🙈 A check we **couldn't measure** is **left out**. It is never counted as zero.
+- 📈 Each of the five areas gets a score out of 100. Your **overall score** combines them, and areas that matter most count for more:
+
+| Area | Counts for |
+| --- | --- |
+| ⚙️ Technical health | 25% |
+| 🔑 Keywords | 25% |
+| 📝 Content quality | 20% |
+| 📍 Local presence | 20% |
+| 🏅 Credibility | 10% |
+
+> 🎯 These percentages are our first guess. We tuned our thinking after testing 10 real sites, and they can change as we learn more.
+
+---
+
+## 🧩 Problems we hit, and what we decided
+
+| 😬 Problem | 💡 What we decided |
+| --- | --- |
+| An AI can say things that aren't true. | The checklists decide what's wrong. The AI only explains it. |
+| The AI might mention something the scan never found. | Every explanation is checked against the real list. If it fails, Claude gets one more try. |
+| The AI service might be down. | The report falls back to ready-made plain-English text and says so. |
+| Some pages are built in a way our scan can't read. | Those checks say "Data unavailable" and are left out of the score. |
+| Owners don't understand SEO words. | Every finding is *what we found, why it matters, what to do*, with no jargon. |
+| Owners who were burned by agencies don't trust a score. | Every finding shows its proof: what was found, and on which page. |
+| Speed tests and link data can be slow or incomplete. | We test the homepage only, with a time limit. Link data is optional and never fails a site. |
+| Checking a whole website would take too long. | We read up to 10 pages, homepage first. |
+
+---
+
+## 🧪 Did it work?
+
+We ran BizBoost AI on **10 real public restaurant websites**, then **read every AI explanation by hand** and compared it to the scanner's proof. 🔬
+
+| 🎯 What we wanted | ✅ What we found |
+| --- | --- |
+| At least 9 of 10 audits finish | 🎉 **10 of 10** |
+| Under 2 minutes each | ⏱️ **Every test run finished in under 2 minutes** (the longest about 70 seconds) |
+| Proof behind every finding | 🧾 **100%** |
+| No AI claims that aren't in the proof | 🛡️ **0 found** in our review |
+
+### 📈 The scores (average about 82)
 
 | Site | Score | Site | Score |
-| --- | --- | --- | --- |
-| Bodhi | 81 | Jajaja | 84 |
-| Sen Saigon | 75 | Coletta | 89 |
-| Ahimsa | 81 | Natural Blend | 88 |
-| Next Level Vegan | 87 | Spicy Moon | 69 |
-| Slutty Vegan | 73 | Kailash Parbat | 91 |
+| --- | :---: | --- | :---: |
+| 🥇 Kailash Parbat | **91** | Jajaja | 84 |
+| Coletta | 89 | Bodhi | 81 |
+| Natural Blend | 88 | Ahimsa | 81 |
+| Next Level Vegan | 87 | Sen Saigon | 75 |
+| Slutty Vegan | 73 | Spicy Moon | 69 |
 
-Testing also found real bugs, which we fixed: AI wording that went beyond the evidence and a wrong readability result on menu-style pages.
+🐛 **Testing also found real bugs, and we fixed them:** some AI wording went beyond the proof, and the readability check gave a wrong result on menu-style pages.
+
+📖 Read the full review: [`review/ai-review-10-sites.md`](review/ai-review-10-sites.md) (also as a [PDF](review/ai-review-10-sites.pdf)).
 
 ---
 
-## Meet the team
+## ✅ What works today (and what doesn't yet)
+
+We want to be honest about where we are. 🙌
+
+**🟢 Working**
+
+- The full check-up, from website address to scores, proof and top 3 fixes.
+- Plain-English explanations from the Claude AI, with the check-and-retry safety loop.
+- A backup mode that works even if the AI is unavailable.
+- Honest handling of anything we can't read ("Data unavailable").
+- A downloadable report you can send to your web designer.
+- Automated tests that pass.
+
+**🟡 Still a work in progress**
+
+- 🎨 The **new front end** (the design at the top of this page) is being built by Erick. The app works today with a simpler screen.
+- 🙋 We haven't yet tested with **real business owners**. Our goal: 4 out of 5 can name their top fix without any help.
+- 🔍 It only reads **public information** and **up to 10 pages**.
+- 🧱 Pages built in a way our scan can't read show "Data unavailable".
+- 🔗 Link data (who links to you) is **optional and incomplete**, so it never fails a site.
+- ⚡ Speed results can change a little from one run to the next.
+- 🔬 Our review shows the AI text matched the proof on 10 sites. That's a strong sign, not a guarantee for every website.
+
+---
+
+## 🙌 Who did what
+
+Two builders, one team. 💪 Say hello! 👋
 
 <table>
   <tr>
-    <td align="center" width="50%">
-      <img src="docs/team/soma.png" alt="Photo of Soma Majumder" width="220"><br>
-      <b>Soma Majumder</b><br>
-      <a href="https://github.com/Soma-Majumder">GitHub</a> · <a href="https://www.linkedin.com/in/somamajumder/">LinkedIn</a>
+    <td align="center" width="50%" valign="top">
+      <img src="docs/team/soma.png" alt="Soma Majumder" width="220" />
+      <h3>Soma Majumder</h3>
+      <p>🎊 Drop by and say hello! Always happy to chat!</p>
+      <p>
+        <a href="https://github.com/Soma-Majumder">🐙 GitHub</a> &nbsp;|&nbsp;
+        <a href="https://www.linkedin.com/in/somamajumder/">💼 LinkedIn</a>
+      </p>
     </td>
-    <td align="center" width="50%">
-      <!-- TODO: add Erick's photo as docs/team/erick.png, then uncomment:
-      <img src="docs/team/erick.png" alt="Photo of Erick Marcatoma" width="220"><br> -->
-      <b>Erick Marcatoma</b><br>
-      <a href="https://github.com/erickmarcatoma">GitHub</a> · <a href="https://www.linkedin.com/in/erick-marcatoma-611326419/">LinkedIn</a>
+    <td align="center" width="50%" valign="top">
+      <img src="docs/team/erick-placeholder.svg" alt="Erick Marcatoma (photo coming soon)" width="220" />
+      <h3>Erick Marcatoma</h3>
+      <p>🎊 Drop by and say hello! Always happy to chat!</p>
+      <p>
+        <a href="https://github.com/erickmarcatoma">🐙 GitHub</a> &nbsp;|&nbsp;
+        <a href="https://www.linkedin.com/in/erick-marcatoma-611326419/">💼 LinkedIn</a>
+      </p>
     </td>
   </tr>
 </table>
 
-**What Soma did**
-- Wrote the product requirements and the agent architecture.
-- Built the website crawler and HTML parser, and the five SEO analyzers (keywords, content, local, technical, credibility).
-- Added the Google PageSpeed and Crawly backlink integrations, and the scoring engine.
-- Built the Claude AI reasoning agent, then made its output plain-language, with a problem, why it matters, and a solution for each finding.
-- Ran and reviewed the 10-site test, fixed the bugs it found, and prepared the demo and presentation.
+Here's how the work was shared, based on our project history.
 
-**What Erick did**
-- Wrote the project plan, the assumptions and the early README.
-- Built the audit orchestrator that runs a site end to end.
-- Built the output validator and the rule-based fallback text.
-- Built the report generator and the results dashboard, and the end-to-end audit tests.
-- Designed the new front end: the landing page, the progress screen and the report screen.
+### 🔧 Soma Majumder, *the Checker and Explainer Builder* 🧠
+
+Soma built the parts that look at a website, score it, and explain it in plain English.
+
+- 📋 **Wrote the plan:** the product requirements and the design of how the AI and the checklists work together.
+- 🕷️ **Built the website reader** that visits up to 10 pages.
+- 📋 **Built the five checklists** for keywords, content, local presence, technical health and credibility.
+- ⚡ **Connected Google's speed test** and the optional link-data service.
+- 📊 **Built the scoring** that turns checks into honest scores.
+- 🤖 **Built the Claude AI helper** that explains problems and picks the top 3 fixes.
+- 😊 **Made the explanations friendly:** every finding is now *what we found, why it matters, what to do*, with emojis.
+- 🔬 **Ran and reviewed the 10-site test,** and fixed the bugs it found.
+- 🎤 **Built the presentation** and prepared the demo.
+
+### 🎨 Erick Marcatoma, *the Flow and Look Builder* 🖥️
+
+Erick built the parts that tie everything together and the way people see it.
+
+- 🗺️ **Wrote the project plan,** the assumptions, and the early README.
+- 🎛️ **Built the audit runner** that takes one website from address to results.
+- 🛡️ **Built the safety check and the backup text,** so only proven explanations reach the report, and the app works even if the AI doesn't.
+- 📄 **Built the report and the results screen.**
+- 🧪 **Wrote the end-to-end tests** that check a whole audit from start to finish.
+- 🎨 **Designed the new front end:** the landing page, the progress screen and the report screen.
+
+### 🤝 Together
+
+- 🌱 Spotted the problem and shaped the idea.
+- 🔍 Reviewed each other's work before it was merged.
+- 🧭 Chose to keep the app simple: one AI helper, five checklists, and honest limits.
 
 ---
 
-## Tech stack
+## 🚀 Try it yourself
 
-- **Python**
-- **Streamlit**: web interface and results dashboard
-- **BeautifulSoup**: page parsing for the crawler and analyzers
-- **Crawly API** (optional): inbound backlinks, free key with 100 requests a day
-- **Google PageSpeed Insights API**: homepage speed and mobile performance
-- **Claude API (Anthropic)**: AI explanations and recommendations
+You'll need a computer with **Python 3.10 or newer**. 🐍
 
----
-
-## Getting started
-
-### Requirements
-
-- Python 3.10+
-- An Anthropic (Claude) API key. Without one, the app still works and shows standard explanations instead of AI-written ones.
-- Recommended: a Google PageSpeed Insights API key. Without one, speed checks show "Data unavailable".
-- Optional: a Crawly API key for backlinks (without it, backlinks show "Data unavailable")
-
-### Install
+### 1️⃣ Get the code
 
 ```bash
 git clone https://github.com/Soma-Majumder/BizBoost-AI.git
@@ -252,101 +348,105 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Configure
+### 2️⃣ Add your keys 🔑
 
-Copy `.env.example` to `.env` in the project root and fill it in. Never commit `.env`.
+Copy `.env.example` to `.env` in the project folder and fill it in. **Never share or commit `.env`.**
 
 ```
-PAGESPEED_API_KEY=your_pagespeed_key
-ANTHROPIC_API_KEY=your_anthropic_key
+ANTHROPIC_API_KEY=your_claude_key        # for the plain-English AI
+PAGESPEED_API_KEY=your_google_speed_key  # for the speed check
 ANTHROPIC_MODEL=claude-sonnet-5-5
-BACKLINK_API_KEY=your_crawly_key   # optional
+BACKLINK_API_KEY=your_crawly_key         # optional
 ```
 
-### Run
+| 🔑 Key | What happens without it |
+| --- | --- |
+| Claude key | The app still works, and shows standard explanations instead of AI-written ones |
+| Google speed key | The speed checks say "Data unavailable" |
+| Link-data key (optional) | Link checks say "Data unavailable" |
+
+### 3️⃣ Start the app ▶️
 
 ```bash
 streamlit run app.py
 ```
 
-Open the local URL Streamlit prints (usually http://localhost:8501), enter a website address, and click **Start Audit**.
+Open the address it prints (usually http://localhost:8501), type in a website, and click **Start Audit**. 🎉
 
-### Run the tests
+### 🧪 Run the checks
 
 ```bash
 pip install pytest
 python -m pytest -q
 ```
 
-### Troubleshooting
+### 🆘 "AI explanations are unavailable right now"
 
-**"AI explanations are unavailable right now."** Check the Streamlit terminal output. If it says the API key was rejected, look for an old `ANTHROPIC_API_KEY` exported in your shell (for example in `~/.zshrc`). A key already set in the environment takes priority over the one in `.env`. Remove or update the old one, open a new terminal, and restart the app.
+Look at the terminal where the app is running. If it says the key was rejected, you may have an **old key saved in your computer's settings** (for example in `~/.zshrc`). An old key there takes priority over the one in `.env`. Remove or update the old one, open a new terminal, and start the app again.
 
 ---
 
-## Success targets (MVP)
+## 🛠️ For developers
 
-| Goal | Target |
+<details>
+<summary>🧰 Tech stack</summary>
+
+- **Python** and **Streamlit** for the app and results screen
+- **BeautifulSoup** for reading pages
+- **Google PageSpeed Insights API** for homepage speed
+- **Claude API (Anthropic)** for the plain-English explanations (default model: `claude-sonnet-5-5`)
+- **Crawly API** (optional) for link data, free key with 100 requests a day
+
+</details>
+
+<details>
+<summary>📏 Rules the system follows</summary>
+
+| Rule | What it means |
 | --- | --- |
-| Audits complete | At least 9 of 10 valid test sites |
-| Fast results | Under 2 minutes from Start Audit to report |
-| Evidence-backed findings | 100% of findings show their evidence or source |
-| Clear next steps | 100% of reports include at least 3 prioritized fixes |
-| Honest scoring | 0 "Data unavailable" items counted as zero |
-| Plain language | 4 of 5 test users can name their top fix without help |
-| All categories work | 5 of 5 categories return a score or "Data unavailable" by Nov 11, 2026 |
-| Trustworthy AI | 0 AI recommendations that cite something not in the evidence |
+| Public data only | No Google Analytics, no Search Console, no accounts. |
+| Crawler safety | Never scans private IP addresses, localhost, or unsafe redirects. |
+| Respect site rules | Checks `robots.txt`, uses reasonable crawl limits, and identifies its crawler. |
+| Evidence first | Every finding links to a measurable check or a named data source. |
+| No invented data | Missing link data stays "unavailable", never zero. |
+| Honest scoring | Unavailable checks are dropped and the remaining weights rescale to 100. |
+| Small crawl | Up to 10 pages: homepage first, then the sitemap, then links from the homepage. |
+| Speed check scope | Homepage only, run alongside the crawl, with a 30-second timeout. |
+| JavaScript-heavy sites | The crawler reads the HTML the server sends. Content built by JavaScript shows "Data unavailable". |
+| Nothing stored | The address, pages, findings and report live in memory only while the results are on screen. |
 
----
+Two outside services receive data: Google PageSpeed gets the homepage address, and the Claude API gets the findings and scores as text (never the raw page).
 
-## Known risks and how we handle them
+</details>
 
-- **PageSpeed is slow or rate-limited:** we run it on the homepage only, with a 30-second timeout. If it fails, speed shows "Data unavailable" and the rest of the audit still finishes.
-- **Sites that block crawling:** we respect the block, stop the scan, and explain in plain language. Pages we can't reach are listed as not scanned, never scored as failures.
-- **AI explains something that isn't in the evidence:** the AI only receives the scanner's evidence, is told to explain only what's in it, and every recommendation must name the check it comes from. We review the output on all 10 test sites.
-- **Claude API rate limit is unknown:** the key comes from the school and no limit has been shared. The SDK retries rate-limit errors automatically, and if the AI is still unavailable the report falls back to rule-based text.
+<details>
+<summary>🗓️ Build plan and open questions</summary>
 
-### If time runs short
-
-**Never cut:** URL validation, the crawler, the Technical, Keyword and Content analyzers, the scoring engine, the report with evidence and a top 3 fixes list, and AI explanations with the rule-based fallback text.
-
-**Ship a simpler version:** Local SEO keeps only the phone number, address and map checks.
-
-**Cut first, in this order:**
-1. Inbound backlinks (the checks stay and show "Data unavailable")
-2. P2 items: the example report and copy or download of the report
-3. PageSpeed results (speed shows "Data unavailable", the rest still works)
-4. The extra Local SEO checks
-
----
-
-## Out of scope for the MVP
-
-- Google Analytics, Search Console, and user accounts
-- Crawling more than 10 pages per audit
-- Ongoing monitoring, alerts, rank tracking, and automated link building
-- Required inbound backlink analysis (optional only: the free Crawly provider has a 100-requests-a-day limit and an incomplete index)
-
----
-
-## Build plan (Nov 4–12, 2026)
-
-| Dates | Work | Deliverable |
+| Dates (2026) | Work | Deliverable |
 | --- | --- | --- |
 | Nov 4–5 | Streamlit interface, URL validation, crawler | Website scanner |
-| Nov 6–7 | Five SEO analyzers, PageSpeed, scoring engine | Evidence-based scores |
-| Nov 8 | Audit orchestrator: one site runs end to end | URL to scores |
-| Nov 9–10 | Claude AI explanations, top 3 fixes, results dashboard | AI-powered audit |
-| Nov 11 | Test on 10 sites, fix bugs, feature freeze | Demo-ready build |
+| Nov 6–7 | Five analyzers, PageSpeed, scoring | Evidence-based scores |
+| Nov 8 | Audit orchestrator | URL to scores |
+| Nov 9–10 | Claude explanations, top 3 fixes, results screen | AI-powered audit |
+| Nov 11 | Test on 10 sites, fix bugs | Demo-ready build |
 | Nov 12 | Demo | Working demo |
 
-The full day-by-day plan is in `BizBoost AI — Project plan.md`. More detail is in the [PRD](docs/BizBoost-AI-PRD.md) and the [agent architecture](docs/BizBoost-AI-Agent-Architecture.md).
+- Still to do before the demo: compare Claude Sonnet 5.5 with Claude Opus 5.5 on a few test sites, and switch only if Sonnet makes claims the evidence can't back up.
+- Open question: how should local SEO be handled for businesses where local search doesn't matter?
+
+</details>
 
 ---
 
-## Open questions
+## 📎 Learn more
 
-- Resolved: backlinks stay in as an optional feature and are the first thing cut if time runs short. Provider: the free Crawly API (getcrawly.com), tested on 5 Nov 2026 on veganbodhi.com, which returned 18 referring domains. Limit: 100 requests a day, one call per audit. Crawly uses an open web index that may be incomplete, so no data, a missing key or an error shows "Data unavailable", never zero and never a failure.
-- Resolved: category weights are Technical 25, Keyword 25, Content 20, Local 20, Credibility and Backlinks 10. A first guess to tune after the 10 test sites (see "How the score works").
-- Resolved: the default model is Claude Sonnet 5.5 (`claude-sonnet-5-5`), chosen for cost and speed, set with `ANTHROPIC_MODEL`. Before the demo, compare it with Claude Opus 5.5 on a few test sites and switch only if Sonnet fails the citation rule.
-- How should Local SEO be handled for businesses where local search doesn't matter?
+- 📄 [Product requirements (PRD)](docs/BizBoost-AI-PRD.md)
+- 🏗️ [How the AI and the checklists work together](docs/BizBoost-AI-Agent-Architecture.md)
+- 🔬 [Our review of 10 real websites](review/ai-review-10-sites.md)
+- 🗺️ [Project plan](BizBoost%20AI%20%E2%80%94%20Project%20plan.md)
+
+<div align="center">
+
+Made with 💙 to help great local businesses get found. 🌱
+
+</div>
