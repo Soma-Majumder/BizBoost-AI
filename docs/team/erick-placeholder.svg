@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-label="Photo of Erick coming soon">
+  <rect width="400" height="400" rx="48" fill="#ECE6FA"/>
+  <circle cx="200" cy="158" r="72" fill="#8B6FD6"/>
+  <path d="M60 372c0-82 62-132 140-132s140 50 140 132z" fill="#8B6FD6"/>
+  <rect x="82" y="318" width="236" height="48" rx="24" fill="#FFFFFF"/>
+  <text x="200" y="351" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1558E0">Photo coming soon</text>
+</svg>
