@@ -163,7 +163,7 @@ RING_COLORS = {"good": "#16a34a", "work": "#f59e0b", "attention": "#dc2626", "no
 
 CSS = """
 <style>
-.block-container { max-width: 1120px; padding-top: 1rem; padding-bottom: 3rem; }
+.block-container { max-width: 1120px; padding-top: 4.5rem; padding-bottom: 3rem; }
 [data-testid="stForm"] { border: 0; padding: 0; }
 
 /* Header: one row with a thin line under it. Logo is a plain link back to the start. */
