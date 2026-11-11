@@ -26,6 +26,7 @@
 - [💡 Our idea](#-our-idea)
 - [🎯 Who is this for?](#-who-is-this-for)
 - [✨ What BizBoost AI does](#-what-bizboost-ai-does)
+- [🛠️ Tech Stack](#-Tech-Stack)
 - [🧠 How it works](#-how-it-works)
 - [🤖 How the AI helps (and how we keep it honest)](#-how-the-ai-helps-and-how-we-keep-it-honest)
 - [📊 How the score works](#-how-the-score-works)
@@ -106,7 +107,16 @@ Visits your website (up to 10 pages, respecting robots rules), checks it across 
 - 🗣️ **Plain English:** an AI assistant turns technical findings into simple words.
 - 🥇 **Top 3 fixes:** ordered, so you know where to start.
 - 🙈 **Honest gaps:** shows "Data unavailable" instead of guessing.
-
+  
+## 🛠️ Tech stack
+- **App and UI:** Streamlit (Python)
+- **AI:** Anthropic Claude API (`anthropic` SDK, `claude-sonnet-5-5`) for plain-English explanations
+- **Crawling:** `requests` + `beautifulsoup4` with `lxml` parser
+- **Speed data:** Google PageSpeed Insights API
+- **Backlinks:** Crawly API (optional)
+- **Config:** `python-dotenv` for API keys
+- **Testing:** `pytest`
+  
 ### 😊 What every finding looks like
 
 Each problem in your report comes in three simple parts:
