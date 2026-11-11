@@ -97,22 +97,15 @@ No account. No SEO knowledge. No paid tools. ✨
 
 ---
 
-## ✨ What BizBoost AI does
+## ✅ What BizBoost AI does
+Visits your website (up to 10 pages, respecting robots rules), checks it across five SEO areas (keywords, content quality, local presence, technical health, credibility), and tells you what to fix first.
 
-Normally, someone has to click through your website page by page, look for problems, work out what matters, and write it all up. **BizBoost AI does that automatically:**
-
-1. 🌐 **Visits your website.** It reads up to 10 pages, the way Google does, and respects each site's rules about what robots may read.
-2. 🔍 **Checks five areas:**
-   - 🔑 **Keywords:** do your pages use the words customers actually search for?
-   - 📝 **Content quality:** is your writing useful and complete?
-   - 📍 **Local presence:** can Google easily find your address, phone number and hours? This matters for "near me" searches.
-   - ⚙️ **Technical health:** are there broken pieces? Is the site fast?
-   - 🏅 **Credibility:** do other websites link to you and vouch for you?
-3. 📊 **Gives you scores.** One overall score out of 100, plus a score for each area.
-4. 🧾 **Shows proof.** Every problem says what was found and on which page.
-5. 🗣️ **Explains in plain English.** An AI assistant turns the technical findings into simple words.
-6. 🥇 **Picks your top 3 fixes,** in order, so you know where to start.
-7. 🙈 **Says so when it can't check something.** It shows **"Data unavailable"** instead of guessing or giving you a false failing grade.
+## ✨ Key features
+- 📊 **Scores:** one overall score out of 100, plus one per area.
+- 🧾 **Proof:** every problem shows what was found and on which page.
+- 🗣️ **Plain English:** an AI assistant turns technical findings into simple words.
+- 🥇 **Top 3 fixes:** ordered, so you know where to start.
+- 🙈 **Honest gaps:** shows "Data unavailable" instead of guessing.
 
 ### 😊 What every finding looks like
 
