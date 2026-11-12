@@ -443,6 +443,6 @@ Two outside services receive data: Google PageSpeed gets the homepage address, a
 
 <div align="center">
 
-Made with 💙 to help great local businesses get found. 🌱
+Made with 💙 by [Soma Majumder](https://github.com/Soma-Majumder) and [Erick Marcatoma](https://github.com/erickmarcatoma) to help great local businesses get found. 🌱
 
 </div>
