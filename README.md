@@ -15,9 +15,9 @@
 
 <sub>🎨 Design preview of the new front end. Scores shown are sample data.</sub>
 
-### 🎬 Watch the demo (1.5 min)
+### 🎬 Watch the demo (1.2 min)
 
-[![Watch the BizBoost AI demo](docs/images/demo-thumbnail.png)](presentation/Screen%20Recording%206.03.20%20cut-1m26.mp4)
+https://github.com/user-attachments/assets/6b792d49-d276-4923-881d-212e535c1a97
 
 <sub>▶️ Click the picture to play the screen recording.</sub>
 
