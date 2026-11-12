@@ -31,7 +31,7 @@ https://github.com/user-attachments/assets/6b792d49-d276-4923-881d-212e535c1a97
 
 - [😩 1. The Problem](#-1-the-problem)
 - [📋 2. The job: B&H Senior SEO Specialist, and its pain points](#-2-the-job-bh-senior-seo-specialist-and-its-pain-points)
-- [🛠️ 3. What we built to take those pain points away](#️-3-what-we-built-to-take-those-pain-points-away)
+- [🛠️ 3. Solution: What we built to take those pain points away](#️-3-solution-what-we-built-to-take-those-pain-points-away)
 - [🏗️ 4. The agent architecture and build flow](#️-4-the-agent-architecture-and-build-flow)
 - [🔁 5. The small loop: the AI can't make things up](#-5-the-small-loop-the-ai-cant-make-things-up)
 - [🧪 Did it work?](#-did-it-work)
@@ -95,7 +95,7 @@ flowchart LR
 
 ---
 
-## 🛠️ 3. What we built to take those pain points away
+## 🛠️ 3. Solution: What we built to take those pain points away
 
 **BizBoost AI is the SEO specialist that small businesses can afford.** 🦸
 
