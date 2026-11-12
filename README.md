@@ -29,10 +29,11 @@ https://github.com/user-attachments/assets/6b792d49-d276-4923-881d-212e535c1a97
 
 ## 📚 Table of contents
 
-- [📋 1. The job: B&H Senior SEO Specialist, and its pain points](#-1-the-job-bh-senior-seo-specialist-and-its-pain-points)
-- [🛠️ 2. What we built to take those pain points away](#️-2-what-we-built-to-take-those-pain-points-away)
-- [🏗️ 3. The agent architecture and build flow](#️-3-the-agent-architecture-and-build-flow)
-- [🔁 4. The small loop: the AI can't make things up](#-4-the-small-loop-the-ai-cant-make-things-up)
+- [😩 1. The Problem](#-1-the-problem)
+- [📋 2. The job: B&H Senior SEO Specialist, and its pain points](#-2-the-job-bh-senior-seo-specialist-and-its-pain-points)
+- [🛠️ 3. What we built to take those pain points away](#️-3-what-we-built-to-take-those-pain-points-away)
+- [🏗️ 4. The agent architecture and build flow](#️-4-the-agent-architecture-and-build-flow)
+- [🔁 5. The small loop: the AI can't make things up](#-5-the-small-loop-the-ai-cant-make-things-up)
 - [🧪 Did it work?](#-did-it-work)
 - [✅ What works today (and what doesn't yet)](#-what-works-today-and-what-doesnt-yet)
 - [🙌 Who did what](#-who-did-what)
@@ -41,7 +42,24 @@ https://github.com/user-attachments/assets/6b792d49-d276-4923-881d-212e535c1a97
 
 ---
 
-## 📋 1. The job: B&H Senior SEO Specialist, and its pain points
+## 😩 1. The Problem
+
+**Small business owners can't afford someone to tell them why their website isn't showing up on Google.**
+
+Big companies like B&H hire a full-time Senior SEO Specialist to audit their site and decide what to fix first. A small business can't: an agency is expensive, and even entry-level SEO tools start around $129/month (Semrush) and are built for marketers, not owners.
+
+### 😩 The pain points
+
+- 💸 **Too expensive:** specialists, agencies and tools all cost too much.
+- 🤯 **Too technical:** the output doesn't tell owners what to do.
+- 🤷 **Nobody tells you:** owners guess, pay an agency, or do nothing.
+- 🤨 **Hard to trust:** a score with no proof.
+
+🥗 **Example:** a vegan restaurant in New York with no page titles, summaries or photo descriptions never shows up for "vegan food near me", and the owner has no idea.
+
+---
+
+## 📋 2. The job: B&H Senior SEO Specialist, and its pain points
 
 We started from a **real job description**: the **Senior SEO Specialist at B&H**. 🧑‍💼 It's the person big companies pay full-time to check a website, work out what's wrong, and decide what to fix first.
 
@@ -77,7 +95,7 @@ flowchart LR
 
 ---
 
-## 🛠️ 2. What we built to take those pain points away
+## 🛠️ 3. What we built to take those pain points away
 
 **BizBoost AI is the SEO specialist that small businesses can afford.** 🦸
 
@@ -127,7 +145,7 @@ Each part of the specialist's job became a checklist. The overall score is a **w
 
 ---
 
-## 🏗️ 3. The agent architecture and build flow
+## 🏗️ 4. The agent architecture and build flow
 
 **Code decides, AI explains.** 🔑 The checklists decide what is wrong. The AI only explains it, and is never allowed to decide on its own that a problem exists.
 
@@ -188,7 +206,7 @@ flowchart TD
 
 ---
 
-## 🔁 4. The small loop: the AI can't make things up
+## 🔁 5. The small loop: the AI can't make things up
 
 This is the safety heart of the build. 💓 The AI can only see the scanner's list of findings, never the raw website, and every answer is **marked like homework** before it reaches you. 🧑‍🏫
 
