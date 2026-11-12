@@ -15,21 +15,24 @@
 
 <sub>🎨 Design preview of the new front end. Scores shown are sample data.</sub>
 
+### 🎬 Watch the demo (1.5 min)
+
+[![Watch the BizBoost AI demo](docs/images/demo-thumbnail.png)](presentation/Screen%20Recording%206.03.20%20cut-1m26.mp4)
+
+<sub>▶️ Click the picture to play the screen recording.</sub>
+
+### 🌐 Try the live app: **[bizboost-ai.streamlit.app](https://bizboost-ai.streamlit.app/)**
+
 </div>
 
 ---
 
 ## 📚 Table of contents
 
-- [😩 The problem](#-the-problem)
-- [🔍 How we came upon BizBoost AI](#-how-we-came-upon-bizboost-ai)
-- [💡 Our idea](#-our-idea)
-- [🎯 Who is this for?](#-who-is-this-for)
-- [✨ What BizBoost AI does](#-what-bizboost-ai-does)
-- [🧠 How it works](#-how-it-works)
-- [🤖 How the AI helps (and how we keep it honest)](#-how-the-ai-helps-and-how-we-keep-it-honest)
-- [📊 How the score works](#-how-the-score-works)
-- [🧩 Problems we hit, and what we decided](#-problems-we-hit-and-what-we-decided)
+- [📋 1. The job: B&H Senior SEO Specialist, and its pain points](#-1-the-job-bh-senior-seo-specialist-and-its-pain-points)
+- [🛠️ 2. What we built to take those pain points away](#️-2-what-we-built-to-take-those-pain-points-away)
+- [🏗️ 3. The agent architecture and build flow](#️-3-the-agent-architecture-and-build-flow)
+- [🔁 4. The small loop: the AI can't make things up](#-4-the-small-loop-the-ai-cant-make-things-up)
 - [🧪 Did it work?](#-did-it-work)
 - [✅ What works today (and what doesn't yet)](#-what-works-today-and-what-doesnt-yet)
 - [🙌 Who did what](#-who-did-what)
@@ -38,78 +41,76 @@
 
 ---
 
-## 😩 The problem
+## 📋 1. The job: B&H Senior SEO Specialist, and its pain points
 
-Picture a small vegan restaurant in New York. The food is great and the owner is proud of the website. 🌱
+We started from a **real job description**: the **Senior SEO Specialist at B&H**. 🧑‍💼 It's the person big companies pay full-time to check a website, work out what's wrong, and decide what to fix first.
 
-- 🔎 But when someone nearby searches Google for **"vegan food near me"**, the restaurant **doesn't show up**.
-- 🧩 Behind the scenes, the website is **missing the basics Google looks for**, like page titles, short summaries and photo descriptions.
-- 🤷 The owner **has no idea**, because nobody ever told them.
-- 💸 Finding out normally means paying an agency or a full-time **SEO specialist**.
+### 🧰 One job, six kinds of work
 
-> 💬 **SEO** just means making your website easy for Google to find and understand.
+| 🗂️ Area of the job | 📝 What B&H pays them to do |
+| --- | --- |
+| 🔍 **Audits** | Recurring technical and on-page audits |
+| 📡 **Monitoring** | Crawlability, speed, XML sitemaps, canonicals, metadata, redirects |
+| 🔑 **Keywords** | Keyword research and knowing the ranking factors |
+| ✍️ **Content** | Requesting new or refreshed content and landing-page changes |
+| 🔗 **Links** | Link building and interlinking |
+| 🎯 **Priorities** | Choosing projects from data and reporting status |
 
-The result: hungry people in the larger NYC community **can't find these restaurants**, and the restaurants lose customers they never knew they had. 😢
+### 😩 The pain points
 
----
+That is **too big a job for a small business**. 🏪
 
-## 🔍 How we came upon BizBoost AI
+- 💸 **Too expensive.** A full-time specialist or an agency costs a lot. Even an SEO tool starts around **$129/month** (Semrush's entry plan). 
+- 🤯 **Too technical.** Those tools are built for marketers, so owners can't turn the output into action.
+- 🤷 **Nobody tells you.** Owners guess, pay an agency, or do nothing.
+- 🤨 **Hard to trust.** Owners burned by agencies don't want a score with no proof.
 
-Most projects start with a job description. **Ours started with something we noticed.** 👀
-
-1. 🥗 **We noticed a pattern.** A lot of vegan restaurants in New York were not SEO optimized, and the wider community couldn't find them.
-2. 🤔 **We asked how we could help.** Could we put **more eyeballs** on these restaurants?
-3. 📋 **Then we found the job behind the problem.** Our teacher asked us to start from a real job description. Ours was the **Senior SEO Specialist** role at B&H, the person big companies pay full-time to check websites, work out what's wrong, and decide what to fix first.
-4. 💡 **We turned that job into a tool.** What if a small business could get the same kind of check-up in minutes, for free?
-5. 🌍 **We opened it up to everyone.** We started with vegan restaurants, but the checks work for **any business with a website**. So BizBoost AI is now open to **ALL businesses**. 🎉
+> 🥗 **Example:** a vegan restaurant in New York with no page titles, summaries or photo descriptions never shows up for *"vegan food near me"*, and the owner has no idea. 😢
 
 ```mermaid
 flowchart LR
-  A[🥗 Noticed: vegan restaurants are hard to find online] --> B[🤔 Asked: how can we help them get seen?]
-  B --> C[📋 Matched it to a real job: Senior SEO Specialist]
-  C --> D[🛠️ Built BizBoost AI]
-  D --> E[🌍 Opened it to ALL businesses]
+  A[🥗 Vegan restaurants are hard to find online] --> B[📋 Real job: B&H Senior SEO Specialist]
+  B --> C[😩 Pain: costly, technical, no proof]
+  C --> D[🛠️ Build BizBoost AI]
+  D --> E[🌍 Open it to ALL businesses]
 ```
 
 ---
 
-## 💡 Our idea
+## 🛠️ 2. What we built to take those pain points away
 
-**BizBoost AI is the SEO specialist that small businesses can't afford.** 🦸
-
-It reads your website the way Google does, finds what's holding you back, and explains it simply:
+**BizBoost AI is the SEO specialist that small businesses can afford.** 🦸
 
 > 🌐 **Enter your website** → 🔍 **We check 5 areas** → 📊 **You get scores and proof** → ✅ **You get your top 3 fixes**
 
-No account. No SEO knowledge. No paid tools. ✨
+No account. No SEO knowledge. No paid tools. Free, in under 2 minutes. ⏱️
 
----
+### 🎯 Five areas, one score each (out of 100)
 
-## 🎯 Who is this for?
+Each part of the specialist's job became a checklist. The overall score is a **weighted average**.
 
-| 🙋 Who | 💖 How BizBoost AI helps |
+| Weight | 🧩 Area | ❓ The question it answers | 👔 Replaces in the job |
+| :---: | --- | --- | --- |
+| 25% | 🔑 **Keywords** | Do your pages use the words customers search for? | Keyword research and ranking factors |
+| 20% | 📝 **Content quality** | Is your writing useful and complete? | Content and landing-page requests |
+| 20% | 📍 **Local presence** | Can Google find your address, phone and hours? | *Added for small businesses* |
+| 25% | ⚙️ **Technical health** | Are there broken pieces? Is the site fast? | Audits and monitoring |
+| 10% | 🏅 **Credibility** | Do other websites link to you and vouch for you? | Link building and interlinking |
+
+> 🎯 The weights are a first guess, tuned after our 10 test sites. Checks we can't reach are **dropped** and the other weights rescale to 100, so nobody is penalized for missing data. 🙈
+
+### 💔 Pain point → ✅ What we did
+
+| 😩 Pain point | 🛠️ How BizBoost AI fixes it |
 | --- | --- |
-| **Small-business owners** (cafés, restaurants, shops, salons) | Shows whether people can find them on Google, and what to fix first |
-| **Busy owners with no time to learn SEO** | Picks the top 3 fixes so they know where to spend their first free hour |
-| **Owners who've been burned by agencies** | Shows the proof behind every finding, so it never feels like a sales pitch |
-| **Owners who pay a web designer** | Gives a clear report to send, so the designer knows exactly what to fix |
-| **Freelance marketers and designers** | A quick, evidence-based check-up to share with a client |
-
----
-
-## ✅ What BizBoost AI does
-Visits your website (up to 10 pages, respecting robots rules), checks it across five SEO areas (keywords, content quality, local presence, technical health, credibility), and tells you what to fix first.
-
-## ✨ Key features
-- 📊 **Scores:** one overall score out of 100, plus one per area.
-- 🧾 **Proof:** every problem shows what was found and on which page.
-- 🗣️ **Plain English:** an AI assistant turns technical findings into simple words.
-- 🥇 **Top 3 fixes:** ordered, so you know where to start.
-- 🙈 **Honest gaps:** shows "Data unavailable" instead of guessing.
+| 💸 Too expensive | Free. No account, no paid tools. |
+| ⏳ Audits take hours | Results in under 2 minutes. |
+| 🤯 Too technical | An AI turns jargon into plain English. |
+| 🧾 No proof | Every finding shows what was found and on which page. |
+| 🤷 Don't know where to start | An ordered **top 3 fixes** list. |
+| 🤝 Can't hand it to a designer | A downloadable report with no SEO talk. |
 
 ### 😊 What every finding looks like
-
-Each problem in your report comes in three simple parts:
 
 | 🔍 What we found | 💡 Why it matters | ✅ What to do |
 | --- | --- | --- |
@@ -117,99 +118,101 @@ Each problem in your report comes in three simple parts:
 
 *(A real example from one of our 10 test sites.)*
 
-### 💰 How it helps a business
+### 🎬 Scope
 
-- 💵 **Saves money.** An expert-style check-up without an agency or a full-time specialist.
-- ⏳ **Saves time.** Results in minutes. A manual audit takes hours.
-- 🍽️ **Brings in more customers.** If Google can't read your site, nearby customers find your competitor instead.
-- 🥇 **Tells you what to do first.** The top 3 list puts the fixes that matter most first.
-- 🤝 **Builds trust.** You can see the evidence behind every finding.
-- 📤 **Easy to hand off.** Send the report to your web designer. No SEO talk needed.
+- 🌐 **Website optimization:** technical SEO, keywords, content, local SEO, credibility.
+- 📱 **Social media:** not measured yet. A feature we can add later.
 
 > 🙋 **One honest limit:** it only looks at public information and up to 10 pages. It's a great starting check-up, not a replacement for a long-term SEO plan.
 
 ---
 
-## 🧠 How it works
+## 🏗️ 3. The agent architecture and build flow
 
-BizBoost AI is **five checklists and one AI helper**. 🧰
+**Code decides, AI explains.** 🔑 The checklists decide what is wrong. The AI only explains it, and is never allowed to decide on its own that a problem exists.
 
 ```mermaid
 flowchart TD
-  U[🌐 You enter your website address] --> V[🛡️ We check the address is safe to scan]
-  V --> C[🕷️ We read up to 10 pages]
-  V --> P[⚡ Google tests how fast the homepage loads]
-  C --> A[📋 Five checklists decide what is wrong]
-  P --> A
-  A --> S[📊 We work out your scores]
-  S --> AI[🤖 The AI explains each problem and picks your top 3 fixes]
-  AI --> R[📄 Your report, with proof for every finding]
+  subgraph IN["1️⃣ Input"]
+    UI[🖥️ Streamlit interface: owner pastes a public URL] --> VAL[🛡️ URL validator: public and safe sites only]
+  end
+  subgraph EV["2️⃣ Gather evidence"]
+    ORCH[🎛️ Audit orchestrator: crawl and PageSpeed run together]
+    ORCH --> CR[🕷️ Website crawler: up to 10 pages]
+    ORCH --> PS[⚡ Google PageSpeed: homepage speed]
+    ORCH --> BL[🔗 Backlinks: optional]
+    CR --> AN[📋 5 SEO analyzers: Keywords, Content, Local, Technical, Credibility]
+    PS --> AN
+    BL --> AN
+    AN --> SC[📊 Scoring engine: score out of 100]
+  end
+  subgraph EX["3️⃣ Explain and check"]
+    AI[🤖 AI reasoning agent: explains the evidence, picks top 3 fixes]
+    OV[🕵️ Output validator: every fix cites its check]
+    FB[🧰 Rule-based text: backup]
+    AI --> OV
+    OV -->|fails: retry once| AI
+    OV -->|fails twice| FB
+  end
+  subgraph OUT["4️⃣ Result"]
+    DASH[📄 Results dashboard: overall score, 5 category scores, top 3 fixes, evidence]
+  end
+  VAL --> ORCH
+  SC --> AI
+  OV -->|✅ pass| DASH
+  FB --> DASH
 ```
 
-**The key idea:** 🔑 the **checklists decide what is wrong**. The **AI only explains it.** The AI is never allowed to decide on its own that a problem exists.
+### 🧭 The flow, step by step
+
+| Step | 🧱 Part | 🎯 Job |
+| :---: | --- | --- |
+| 1️⃣ | 🖥️ **Streamlit interface** | The owner pastes a public URL |
+| 1️⃣ | 🛡️ **URL validator** | Only public, safe sites. Never private IPs, localhost or unsafe redirects |
+| 2️⃣ | 🎛️ **Audit orchestrator** | Runs the crawl and the speed test at the same time |
+| 2️⃣ | 🕷️ **Website crawler** | Reads up to 10 pages, homepage first, respecting `robots.txt` |
+| 2️⃣ | ⚡ **Google PageSpeed** | Tests homepage speed (30-second limit) |
+| 2️⃣ | 🔗 **Backlinks (optional)** | Inbound link data. Never fails a site |
+| 2️⃣ | 📋 **5 SEO analyzers** | Keywords, Content, Local, Technical, Credibility |
+| 2️⃣ | 📊 **Scoring engine** | Turns checks into a score out of 100 |
+| 3️⃣ | 🤖 **AI reasoning agent** | Explains the evidence and picks the top 3 fixes |
+| 3️⃣ | 🕵️ **Output validator** | Checks every fix names a real check |
+| 3️⃣ | 🧰 **Rule-based text** | Backup if the AI fails twice or is down |
+| 4️⃣ | 📄 **Results dashboard** | Overall score, 5 category scores, top 3 fixes, evidence for each |
+
+### 📊 How the score works
+
+- ✅ A check that **passes** earns a full point, ⚠️ one that **needs attention** earns half, and ❌ one that **fails** earns none.
+- 🙈 A check we **couldn't measure** is **left out**. It is never counted as zero.
+- 📈 The overall score combines the five areas using the weights above.
 
 ---
 
-## 🤖 How the AI helps (and how we keep it honest)
+## 🔁 4. The small loop: the AI can't make things up
 
-Technical findings sound like this: *"Meta description tag is missing."* 😵 Most owners don't know what that means.
-
-That's where the **Claude API** comes in. It turns those findings into plain language a business owner can understand, without any jargon. We send Claude the list of real problems **once**, and it explains each one and picks the top 3 fixes.
-
-### 🔁 The "teacher marking homework" loop
+This is the safety heart of the build. 💓 The AI can only see the scanner's list of findings, never the raw website, and every answer is **marked like homework** before it reaches you. 🧑‍🏫
 
 ```mermaid
-flowchart TD
-  W[✍️ Claude writes the explanations] --> K[🕵️ The app checks them against the real list of problems]
-  K -->|✅ Good| OK[📄 They go into your report]
-  K -->|🔧 Not good| RE[🔁 Claude gets one more try]
-  RE --> K2[🕵️ The app checks again]
-  K2 -->|✅ Good| OK
-  K2 -->|❌ Still not good| FB[🧰 Ready-made plain-English text is used instead]
-  FB --> N[📝 The report says this text wasn't written by the AI]
+flowchart LR
+  S[📊 Scores + findings: the only thing the AI sees] --> A[🤖 AI agent: writes a fix per finding]
+  A --> V{🕵️ Output validator: does every fix name its check?}
+  V -->|✅ pass| R[📄 Report shown to the owner]
+  V -->|🔧 fails: retry once| A
+  V -->|❌ fails twice, or AI is down| F[🧰 Rule-based fallback text]
+  F --> R
 ```
 
-### 🛡️ Safety rules we built in
+### 📜 The rules
 
-- 🚫 **The AI can't invent problems.** It only sees the scanner's list of findings, never the raw website.
-- 🔢 **No made-up numbers.** If a number isn't in the evidence, the explanation is rejected.
-- 🔁 **Only one retry,** and then the backup text takes over.
+- 🧾 **Explain only what the evidence shows.**
+- 🏷️ **Every recommendation names its check.**
+- 🚫 **No invented metrics, rankings or traffic.** If a number isn't in the evidence, the explanation is rejected.
+- 🔁 **Only one retry,** then the backup text takes over, and the report says it wasn't written by the AI.
 - 🧰 **The app still works if the AI is down.** You always get your scores and findings.
 - 🙈 **Can't check it? We say so.** "Data unavailable" is never counted against you.
 - 🔒 **Nothing is saved.** Your address and results disappear when you close the page.
 
----
-
-## 📊 How the score works
-
-- ✅ A check that **passes** earns a full point, ⚠️ one that **needs attention** earns half, and ❌ one that **fails** earns none.
-- 🙈 A check we **couldn't measure** is **left out**. It is never counted as zero.
-- 📈 Each of the five areas gets a score out of 100. Your **overall score** combines them, and areas that matter most count for more:
-
-| Area | Counts for |
-| --- | --- |
-| ⚙️ Technical health | 25% |
-| 🔑 Keywords | 25% |
-| 📝 Content quality | 20% |
-| 📍 Local presence | 20% |
-| 🏅 Credibility | 10% |
-
-> 🎯 These percentages are our first guess. We tuned our thinking after testing 10 real sites, and they can change as we learn more.
-
----
-
-## 🧩 Problems we hit, and what we decided
-
-| 😬 Problem | 💡 What we decided |
-| --- | --- |
-| An AI can say things that aren't true. | The checklists decide what's wrong. The AI only explains it. |
-| The AI might mention something the scan never found. | Every explanation is checked against the real list. If it fails, Claude gets one more try. |
-| The AI service might be down. | The report falls back to ready-made plain-English text and says so. |
-| Some pages are built in a way our scan can't read. | Those checks say "Data unavailable" and are left out of the score. |
-| Owners don't understand SEO words. | Every finding is *what we found, why it matters, what to do*, with no jargon. |
-| Owners who were burned by agencies don't trust a score. | Every finding shows its proof: what was found, and on which page. |
-| Speed tests and link data can be slow or incomplete. | We test the homepage only, with a time limit. Link data is optional and never fails a site. |
-| Checking a whole website would take too long. | We read up to 10 pages, homepage first. |
+🎯 **Goal: 0 unsupported recommendations.**
 
 ---
 
@@ -281,7 +284,7 @@ Two builders, one team. 💪 Say hello! 👋
       </p>
     </td>
     <td align="center" width="50%" valign="top">
-      <img src="docs/team/erick-placeholder.svg" alt="Erick Marcatoma (photo coming soon)" width="220" />
+      <img src="docs/team/erick.png" alt="Erick Marcatoma" width="220" />
       <h3>Erick Marcatoma</h3>
       <p>🎊 Drop by and say hello! Always happy to chat!</p>
       <p>
