@@ -13,7 +13,7 @@
 
 ![The new BizBoost AI design: landing page, audit progress and report](docs/images/new-front-end-design.webp)
 
-<sub>🎨 Design preview of the new front end. Scores shown are sample data.</sub>
+<sub>🎨 Design preview. Scores shown are sample data.</sub>
 
 ### 🎬 Watch the demo (1.2 min)
 
@@ -227,7 +227,7 @@ We ran BizBoost AI on **10 real public restaurant websites**, then **read every 
 | Proof behind every finding | 🧾 **100%** |
 | No AI claims that aren't in the proof | 🛡️ **0 found** in our review |
 
-### 📈 The scores (average about 82)
+### 📈 The scores (average 82)
 
 | Site | Score | Site | Score |
 | --- | :---: | --- | :---: |
@@ -235,7 +235,7 @@ We ran BizBoost AI on **10 real public restaurant websites**, then **read every 
 | Coletta | 89 | Bodhi | 81 |
 | Natural Blend | 88 | Ahimsa | 81 |
 | Next Level Vegan | 87 | Sen Saigon | 75 |
-| Slutty Vegan | 73 | Spicy Moon | 69 |
+| Slutty Vegan | 73 | Spicy Moon | 71 |
 
 🐛 **Testing also found real bugs, and we fixed them:** some AI wording went beyond the proof, and the readability check gave a wrong result on menu-style pages.
 
@@ -250,6 +250,7 @@ We want to be honest about where we are. 🙌
 **🟢 Working**
 
 - The full check-up, from website address to scores, proof and top 3 fixes.
+- 🎨 The **new front end**: the landing page, the audit progress screen and the report screen, designed by Erick.
 - Plain-English explanations from the Claude AI, with the check-and-retry safety loop.
 - A backup mode that works even if the AI is unavailable.
 - Honest handling of anything we can't read ("Data unavailable").
@@ -258,7 +259,6 @@ We want to be honest about where we are. 🙌
 
 **🟡 Still a work in progress**
 
-- 🎨 The **new front end** (the design at the top of this page) is being built by Erick. The app works today with a simpler screen.
 - 🙋 We haven't yet tested with **real business owners**. Our goal: 4 out of 5 can name their top fix without any help.
 - 🔍 It only reads **public information** and **up to 10 pages**.
 - 🧱 Pages built in a way our scan can't read show "Data unavailable".
@@ -443,6 +443,6 @@ Two outside services receive data: Google PageSpeed gets the homepage address, a
 
 <div align="center">
 
-Made with 💙 to help great local businesses get found. 🌱
+Made with 💙 by [Soma Majumder](https://github.com/Soma-Majumder) and [Erick Marcatoma](https://github.com/erickmarcatoma) to help great local businesses get found. 🌱
 
 </div>
