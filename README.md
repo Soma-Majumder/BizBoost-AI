@@ -407,11 +407,15 @@ Look at the terminal where the app is running. If it says the key was rejected, 
 <details>
 <summary>🧰 Tech stack</summary>
 
-- **Python** and **Streamlit** for the app and results screen
-- **BeautifulSoup** for reading pages
-- **Google PageSpeed Insights API** for homepage speed
-- **Claude API (Anthropic)** for the plain-English explanations (default model: `claude-sonnet-5-5`)
-- **Crawly API** (optional) for link data, free key with 100 requests a day
+- 🐍 **Python:** the language everything is written in.
+- 🖥️ **Streamlit:** builds the app and results screen. The owner pastes a URL, watches the progress, and reads the report in the browser, with no separate front-end code.
+- 🌐 **Requests:** fetches each page, like a browser would. It also fetches `robots.txt` and the sitemap.
+- 🍲 **BeautifulSoup + lxml:** reads the page HTML and pulls out titles, headings, links, images and text. These are the facts the five checks run on.
+- ⚡ **Google PageSpeed Insights API:** tests how fast the homepage loads, which feeds the Technical health score.
+- 🤖 **Claude API (Anthropic):** turns the findings into plain English and picks the top 3 fixes. It only sees the findings, never the raw page. Default model: `claude-sonnet-5-5`, changeable with `ANTHROPIC_MODEL`.
+- 🔗 **Crawly API (optional):** counts who links to your site, which feeds the Credibility score. Free key, 100 requests a day. If it's missing, those checks say "Data unavailable".
+- 🔑 **python-dotenv:** loads the API keys from your local `.env` file so they stay out of the code.
+- 🧪 **pytest:** runs the automated tests that check a whole audit, from URL to report.
 
 </details>
 
