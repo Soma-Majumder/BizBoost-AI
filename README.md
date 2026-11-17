@@ -97,9 +97,9 @@ flowchart LR
 
 ## 🛠️ 3. Solution: What we built to take those pain points away
 
-BizBoost AI audits your website in under 2 minutes and tells you, in plain English, the top 3 fixes that will help you show up on Google.
+**BizBoost AI audits your website in under 2 minutes and tells you, in plain English, the top 3 fixes that will help you show up on Google.**
 
-**BizBoost AI is the SEO specialist that small businesses can afford.** 🦸
+BizBoost AI is the SEO specialist that small businesses can afford. 🦸
 
 > 🌐 **Enter your website** → 🔍 **We check 5 areas** → 📊 **You get scores and proof** → ✅ **You get your top 3 fixes**
 
