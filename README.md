@@ -463,7 +463,7 @@ Two outside services receive data: Google PageSpeed gets the homepage address, a
 - 📄 [Product requirements (PRD)](docs/BizBoost-AI-PRD.md)
 - 🏗️ [How the AI and the checklists work together](docs/BizBoost-AI-Agent-Architecture.md)
 - 🔬 [Our review of 10 real websites](review/ai-review-10-sites.md)
-- 🗺️ [Project plan](BizBoost%20AI%20%E2%80%94%20Project%20plan.md)
+- 🗺️ [Project plan](docs/project-plan.md)
 
 <div align="center">
 
